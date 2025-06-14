@@ -29,9 +29,17 @@ def main():
     # Al inicio del programa
     limpiar_pantalla()
 
+    # Mostrar cabecera del programa
+    print("=" * 40)
+    print(" CALCULADORA DE BMI ".center(40))
+    print("=" * 40)
+
     # Pedir peso y talla al usuario
     peso = pedir_float_positivo("¿Cuántos Kilogramos pesas? ")
     altura = pedir_float_positivo("¿Cuánto metros mides? ")
+
+    print(f"Peso ingresado: {peso} kg")
+    print(f"Altura ingresada: {altura} m")
 
     bmi = calcular_bmi(peso, altura)
     print(f"Tu indice de masa corporal es: {bmi:.2f}")
