@@ -20,19 +20,22 @@ def pedir_float_positivo(prompt):
         except ValueError:
             print("Entrada inválida. Ingresa un número válido.")
 
-# Al inicio del programa
-limpiar_pantalla()
+def main():
+    """Ejecuta el flujo principal de la aplicación."""
+    # Al inicio del programa
+    limpiar_pantalla()
 
-# Pedir peso y talla al usuario
-peso = pedir_float_positivo("¿Cuántos Kilogramos pesas? ")
-altura = pedir_float_positivo("¿Cuánto metros mides? ")
+    # Pedir peso y talla al usuario
+    peso = pedir_float_positivo("¿Cuántos Kilogramos pesas? ")
+    altura = pedir_float_positivo("¿Cuánto metros mides? ")
+
+    bmi = calcular_bmi(peso, altura)
+    print(f"Tu indice de masa corporal es: {bmi:.2f}")
 
 def calcular_bmi(peso, altura):
     """Calcula el índice de masa corporal."""
     return peso / (altura ** 2)
 
-# Calcular el BMI
-bmi = calcular_bmi(peso, altura)
 
-# Presentar resultado
-print(f"Tu indice de masa corporal es: {bmi:.2f}")
+if __name__ == "__main__":
+    main()
