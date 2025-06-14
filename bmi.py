@@ -61,6 +61,9 @@ def main():
         print(f"Tu indice de masa corporal es: {bmi:.2f}")
         clasificacion = clasificar_bmi(bmi)
         print(f"Clasificaci\u00f3n: {clasificacion}")
+        consejo = obtener_consejo(clasificacion)
+        if consejo:
+            print(consejo)
         imprimir_tabla_bmi(bmi, clasificacion)
 
         repetir = input("¿Deseas calcular otro BMI? [S/N]: ")
@@ -84,6 +87,18 @@ def clasificar_bmi(bmi):
         return "Alto"
     else:
         return "Muy alto"
+
+
+def obtener_consejo(clasificacion):
+    """Devuelve un breve consejo seg\u00fan la clasificaci\u00f3n del BMI."""
+    mensajes = {
+        "Muy bajo": "Consulta a un profesional para mejorar tu nutrici\u00f3n.",
+        "Bajo": "Incluye m\u00e1s calor\u00edas saludables en tu dieta.",
+        "Normal": "Contin\u00faa con tu estilo de vida saludable.",
+        "Alto": "Aumenta la actividad f\u00edsica y cuida tu alimentaci\u00f3n.",
+        "Muy alto": "Busca apoyo m\u00e9dico para reducir tu peso.",
+    }
+    return mensajes.get(clasificacion, "")
 
 
 def imprimir_tabla_bmi(bmi, clasificacion):
