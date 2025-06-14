@@ -33,3 +33,8 @@ Clasificación: Normal
 ```
 
 (The highlighted cell uses inverted colours.)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
