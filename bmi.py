@@ -37,30 +37,35 @@ def pedir_float_positivo(prompt, min_val=None, max_val=None):
 
 def main():
     """Ejecuta el flujo principal de la aplicación."""
-    # Al inicio del programa
-    limpiar_pantalla()
+    while True:
+        # Al inicio del programa
+        limpiar_pantalla()
 
-    # Mostrar cabecera del programa
-    print("=" * 40)
-    print(" CALCULADORA DE BMI ".center(40))
-    print("=" * 40)
+        # Mostrar cabecera del programa
+        print("=" * 40)
+        print(" CALCULADORA DE BMI ".center(40))
+        print("=" * 40)
 
-    # Pedir peso y talla al usuario
-    peso = pedir_float_positivo(
-        "¿Cuántos Kilogramos pesas? ", min_val=30, max_val=300
-    )
-    altura = pedir_float_positivo(
-        "¿Cuánto metros mides? ", min_val=0.5, max_val=2.5
-    )
+        # Pedir peso y talla al usuario
+        peso = pedir_float_positivo(
+            "¿Cuántos Kilogramos pesas? ", min_val=30, max_val=300
+        )
+        altura = pedir_float_positivo(
+            "¿Cuánto metros mides? ", min_val=0.5, max_val=2.5
+        )
 
-    print(f"Peso ingresado: {peso} kg")
-    print(f"Altura ingresada: {altura} m")
+        print(f"Peso ingresado: {peso} kg")
+        print(f"Altura ingresada: {altura} m")
 
-    bmi = calcular_bmi(peso, altura)
-    print(f"Tu indice de masa corporal es: {bmi:.2f}")
-    clasificacion = clasificar_bmi(bmi)
-    print(f"Clasificaci\u00f3n: {clasificacion}")
-    imprimir_tabla_bmi(bmi, clasificacion)
+        bmi = calcular_bmi(peso, altura)
+        print(f"Tu indice de masa corporal es: {bmi:.2f}")
+        clasificacion = clasificar_bmi(bmi)
+        print(f"Clasificaci\u00f3n: {clasificacion}")
+        imprimir_tabla_bmi(bmi, clasificacion)
+
+        repetir = input("¿Deseas calcular otro BMI? [S/N]: ")
+        if repetir.strip().lower().startswith("n"):
+            break
 
 def calcular_bmi(peso, altura):
     """Calcula el índice de masa corporal."""
