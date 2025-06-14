@@ -1,11 +1,15 @@
 import os
-import platform
 
 def limpiar_pantalla():
-    if platform.system() == "Windows":
-        os.system('cls')
-    else:
-        os.system('clear')
+    """Borra el contenido de la terminal cuando es posible.
+
+    Utiliza ``os.system('cls' if os.name == 'nt' else 'clear')`` para
+    realizar la limpieza de forma compatible entre sistemas Windows y UNIX.
+    Esta acción puede fallar o no estar permitida en algunos entornos,
+    por lo que se considera opcional y su ausencia no afecta al programa.
+    """
+
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def pedir_float_positivo(prompt):
     """Solicita al usuario un número flotante positivo."""
