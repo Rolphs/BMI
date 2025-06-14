@@ -34,6 +34,15 @@ Clasificación: Normal
 
 (The highlighted cell uses inverted colours.)
 
+## Running tests
+
+To run the unit tests, install `pytest` and execute:
+
+```bash
+pytest
+```
+
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
