@@ -37,7 +37,7 @@ def main():
     print(f"Tu indice de masa corporal es: {bmi:.2f}")
     clasificacion = clasificar_bmi(bmi)
     print(f"Clasificaci\u00f3n: {clasificacion}")
-    imprimir_tabla_bmi(clasificacion)
+    imprimir_tabla_bmi(bmi, clasificacion)
 
 def calcular_bmi(peso, altura):
     """Calcula el índice de masa corporal."""
@@ -58,18 +58,18 @@ def clasificar_bmi(bmi):
         return "Muy alto"
 
 
-def imprimir_tabla_bmi(clasificacion):
-    """Muestra una tabla con el rango destacado correspondiente."""
+def imprimir_tabla_bmi(bmi, clasificacion):
+    """Muestra una tabla con el BMI dentro del rango destacado."""
     categorias = ["Muy bajo", "Bajo", "Normal", "Alto", "Muy alto"]
     ancho = 12
     linea = "+" + "+".join(["-" * ancho for _ in categorias]) + "+"
     encabezado = "|" + "|".join(cat.center(ancho) for cat in categorias) + "|"
 
-    # Construir fila con la categor\u00eda resaltada
+    # Construir fila con el BMI en la categor\u00eda correspondiente
     fila = []
     for cat in categorias:
         if cat == clasificacion:
-            texto = f"\x1b[7m{cat.center(ancho)}\x1b[0m"  # invert colors
+            texto = f"\x1b[7m{format(bmi, '.2f').center(ancho)}\x1b[0m"
         else:
             texto = " " * ancho
         fila.append(texto)
