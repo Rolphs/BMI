@@ -11,16 +11,27 @@ def limpiar_pantalla():
 
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def pedir_float_positivo(prompt):
-    """Solicita al usuario un número flotante positivo."""
+def pedir_float_positivo(prompt, min_val=None, max_val=None):
+    """Solicita al usuario un número flotante positivo.
+
+    Si ``min_val`` o ``max_val`` se proporcionan, el valor ingresado debe
+    encontrarse dentro de ese rango (inclusive). En caso contrario se
+    mostrar\u00e1 un mensaje explicativo y se pedir\u00e1 nuevamente.
+    """
     while True:
         dato = input(prompt)
         try:
             valor = float(dato)
-            if valor > 0:
-                return valor
-            else:
+            if valor <= 0:
                 print("Por favor ingresa un número positivo mayor que cero.")
+                continue
+            if min_val is not None and valor < min_val:
+                print(f"El valor debe ser mayor o igual que {min_val}.")
+                continue
+            if max_val is not None and valor > max_val:
+                print(f"El valor debe ser menor o igual que {max_val}.")
+                continue
+            return valor
         except ValueError:
             print("Entrada inválida. Ingresa un número válido.")
 
@@ -35,8 +46,12 @@ def main():
     print("=" * 40)
 
     # Pedir peso y talla al usuario
-    peso = pedir_float_positivo("¿Cuántos Kilogramos pesas? ")
-    altura = pedir_float_positivo("¿Cuánto metros mides? ")
+    peso = pedir_float_positivo(
+        "¿Cuántos Kilogramos pesas? ", min_val=30, max_val=300
+    )
+    altura = pedir_float_positivo(
+        "¿Cuánto metros mides? ", min_val=0.5, max_val=2.5
+    )
 
     print(f"Peso ingresado: {peso} kg")
     print(f"Altura ingresada: {altura} m")
