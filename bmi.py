@@ -35,6 +35,14 @@ def pedir_float_positivo(prompt, min_val=None, max_val=None):
         except ValueError:
             print("Entrada inválida. Ingresa un número válido.")
 
+def pedir_cadena_no_vacia(prompt):
+    """Solicita al usuario una cadena no vacía."""
+    while True:
+        valor = input(prompt).strip()
+        if valor:
+            return valor
+        print("Por favor ingresa un valor no vacío.")
+
 def main():
     """Ejecuta el flujo principal de la aplicación."""
     while True:
@@ -45,6 +53,9 @@ def main():
         print("=" * 40)
         print(" CALCULADORA DE BMI ".center(40))
         print("=" * 40)
+
+        nombre = pedir_cadena_no_vacia("¿Cómo te llamas? ")
+        print(f"Hola, {nombre}!\n")
 
         # Pedir peso y talla al usuario
         peso = pedir_float_positivo(
