@@ -6,7 +6,12 @@ import pytest
 # imported when running ``pytest`` directly.
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from bmi import calcular_bmi, clasificar_bmi, pedir_cadena_no_vacia
+from bmi import (
+    calcular_bmi,
+    clasificar_bmi,
+    pedir_cadena_no_vacia,
+    calcular_rango_peso_saludable,
+)
 
 
 def test_calcular_bmi_known_values():
@@ -35,3 +40,9 @@ def test_pedir_cadena_no_vacia(monkeypatch):
     respuestas = iter(["", "   ", "Ana"])
     monkeypatch.setattr("builtins.input", lambda _: next(respuestas))
     assert pedir_cadena_no_vacia("nombre") == "Ana"
+
+
+def test_calcular_rango_peso_saludable():
+    peso_min, peso_max = calcular_rango_peso_saludable(1.70)
+    assert peso_min == pytest.approx(18.5 * 1.70 ** 2)
+    assert peso_max == pytest.approx(24.9 * 1.70 ** 2)
