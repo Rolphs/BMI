@@ -26,6 +26,11 @@ MENSAJES = {
         "pregunta_objetivo": "Ingresa un peso objetivo para ver su BMI: ",
         "bmi_objetivo": "El BMI para {peso_objetivo} kg sería: {bmi_objetivo:.2f}",
         "repetir": "¿Deseas calcular otro BMI? [S/N]: ",
+        "error_positivo": "Por favor ingresa un número positivo mayor que cero.",
+        "error_minimo": "El valor debe ser mayor o igual que {min_val}.",
+        "error_maximo": "El valor debe ser menor o igual que {max_val}.",
+        "error_invalido": "Entrada inválida. Ingresa un número válido.",
+        "error_vacio": "Por favor ingresa un valor no vacío.",
     },
     "en": {
         "titulo": "BMI CALCULATOR",
@@ -47,6 +52,11 @@ MENSAJES = {
         "pregunta_objetivo": "Enter a target weight to see its BMI: ",
         "bmi_objetivo": "The BMI for {peso_objetivo} kg would be: {bmi_objetivo:.2f}",
         "repetir": "Calculate another BMI? [Y/N]: ",
+        "error_positivo": "Please enter a positive number greater than zero.",
+        "error_minimo": "Value must be greater than or equal to {min_val}.",
+        "error_maximo": "Value must be less than or equal to {max_val}.",
+        "error_invalido": "Invalid input. Enter a valid number.",
+        "error_vacio": "Please enter a non-empty value.",
     },
 }
 
@@ -91,17 +101,17 @@ def pedir_float_positivo(prompt, min_val=None, max_val=None):
         try:
             valor = float(dato)
             if valor <= 0:
-                print("Por favor ingresa un número positivo mayor que cero.")
+                print(msj("error_positivo"))
                 continue
             if min_val is not None and valor < min_val:
-                print(f"El valor debe ser mayor o igual que {min_val}.")
+                print(msj("error_minimo", min_val=min_val))
                 continue
             if max_val is not None and valor > max_val:
-                print(f"El valor debe ser menor o igual que {max_val}.")
+                print(msj("error_maximo", max_val=max_val))
                 continue
             return valor
         except ValueError:
-            print("Entrada inválida. Ingresa un número válido.")
+            print(msj("error_invalido"))
 
 
 def pedir_cadena_no_vacia(prompt):
@@ -110,7 +120,7 @@ def pedir_cadena_no_vacia(prompt):
         valor = input(prompt).strip()
         if valor:
             return valor
-        print("Por favor ingresa un valor no vacío.")
+        print(msj("error_vacio"))
 
 
 def obtener_nombres_guardados(base_dir="registros"):
