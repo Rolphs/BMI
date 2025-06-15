@@ -65,9 +65,19 @@ All completed calculations are appended to ``registros/<tu_nombre>.csv`` so you 
 
 ## Running tests
 
-To run the unit tests, install `pytest` and execute the command from the
-repository root.  The test suite adjusts `sys.path` automatically so running
-`pytest` directly works without using `python -m`:
+Before invoking the test suite make sure the dependencies are installed.  You
+can either install the project in editable mode or use the provided
+``requirements.txt`` file:
+
+```bash
+pip install .
+# or
+pip install -r requirements.txt
+```
+
+After that simply run ``pytest`` from the repository root.  The suite adjusts
+``sys.path`` automatically so running ``pytest`` directly works without using
+``python -m``.  ``matplotlib`` is required for the plot-related tests.
 
 ```bash
 pytest
