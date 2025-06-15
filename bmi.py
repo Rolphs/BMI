@@ -1,4 +1,6 @@
 import os
+import csv
+from datetime import datetime
 
 def limpiar_pantalla():
     """Borra el contenido de la terminal cuando es posible.
@@ -86,7 +88,9 @@ def main():
             "Ingresa un peso objetivo para ver su BMI: ", min_val=30, max_val=300
         )
         bmi_objetivo = calcular_bmi(peso_objetivo, altura)
-        print(f"El BMI para {peso_objetivo} kg ser\u00eda: {bmi_objetivo:.2f}")
+        print(f"El BMI para {peso_objetivo} kg sería: {bmi_objetivo:.2f}")
+
+        guardar_registro(nombre, peso, altura, bmi, clasificacion)
 
         repetir = input("¿Deseas calcular otro BMI? [S/N]: ")
         if repetir.strip().lower().startswith("n"):
@@ -152,6 +156,38 @@ def calcular_rango_peso_saludable(altura, bmi_min=18.5, bmi_max=24.9):
     peso_min = bmi_min * altura ** 2
     peso_max = bmi_max * altura ** 2
     return peso_min, peso_max
+
+
+def guardar_registro(nombre, peso, altura, bmi, clasificacion, base_dir="registros"):
+    """Guarda los datos de la consulta en un archivo CSV.
+
+    El archivo se crea dentro de ``base_dir`` con el nombre del usuario.
+    Si el directorio o el archivo no existen, se crean autom\u00e1ticamente.
+    """
+
+    os.makedirs(base_dir, exist_ok=True)
+    sanitized = "".join(c for c in nombre if c.isalnum() or c in "-_ ").strip().replace(" ", "_")
+    if not sanitized:
+        sanitized = "usuario"
+    archivo = os.path.join(base_dir, f"{sanitized}.csv")
+
+    escribir_encabezado = not os.path.exists(archivo)
+
+    with open(archivo, "a", newline="", encoding="utf-8") as f:
+        campos = ["fecha", "nombre", "peso", "altura", "bmi", "clasificacion"]
+        writer = csv.DictWriter(f, fieldnames=campos)
+        if escribir_encabezado:
+            writer.writeheader()
+        writer.writerow(
+            {
+                "fecha": datetime.now().isoformat(timespec="seconds"),
+                "nombre": nombre,
+                "peso": peso,
+                "altura": altura,
+                "bmi": round(bmi, 2),
+                "clasificacion": clasificacion,
+            }
+        )
 
 
 if __name__ == "__main__":
