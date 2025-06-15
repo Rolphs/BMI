@@ -1,6 +1,6 @@
 # BMI Calculator
 
-[![CI](https://github.com/YOUR_GITHUB_USERNAME/BMI/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_GITHUB_USERNAME/BMI/actions/workflows/ci.yml)
+[![CI](https://github.com/Rolphs/BMI/actions/workflows/ci.yml/badge.svg)](https://github.com/Rolphs/BMI/actions/workflows/ci.yml)
 
 This repository contains a simple Python script `bmi.py` that calculates the **Body Mass Index** (BMI). BMI is a ratio of weight to height squared used to determine whether a person has a healthy body weight.
 
