@@ -25,3 +25,12 @@ def test_calcular_tendencia_bmi_stable():
         {"fecha": "2024-02-01T00:00:00", "bmi": 22.05},
     ]
     assert calcular_tendencia_bmi(registros) == "stable"
+
+
+def test_calcular_tendencia_bmi_threshold_param():
+    registros = [
+        {"fecha": "2024-01-01T00:00:00", "bmi": 22},
+        {"fecha": "2024-02-01T00:00:00", "bmi": 22.05},
+    ]
+    assert calcular_tendencia_bmi(registros, threshold=0.1) == "stable"
+    assert calcular_tendencia_bmi(registros, threshold=0.04) == "rising"
