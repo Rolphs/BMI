@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bmi-calculator"
+version = "0.1.0"
+description = "Simple BMI calculator with history plotting"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [ { name = "BMI Project Contributors" } ]
+license = { file = "LICENSE" }
+dependencies = [
+    "matplotlib"
+]
+
+[project.scripts]
+bmi = "bmi:main"
+plot-bmi-history = "plot_bmi_history:main"
+
+[tool.setuptools]
+py-modules = ["bmi", "plot_bmi_history"]
