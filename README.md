@@ -58,3 +58,16 @@ pytest
 
 This project is licensed under the [MIT License](LICENSE).
 
+
+## Plotting BMI history
+
+A helper script ``plot_bmi_history.py`` reads the CSV file for a user and
+plots their BMI values over time using ``matplotlib``. The plot displays the
+evolution and prints whether the trend is ``rising``, ``falling`` or ``stable``
+based on the first and last stored BMI values. Run it with:
+
+```bash
+python plot_bmi_history.py <nombre>
+```
+
+Make sure ``matplotlib`` is installed to view the graph.
