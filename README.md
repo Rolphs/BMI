@@ -36,7 +36,9 @@ Clasificación: Normal
 
 ## Running tests
 
-To run the unit tests, install `pytest` and execute:
+To run the unit tests, install `pytest` and execute the command from the
+repository root.  The test suite adjusts `sys.path` automatically so running
+`pytest` directly works without using `python -m`:
 
 ```bash
 pytest
