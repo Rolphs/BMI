@@ -71,3 +71,15 @@ python plot_bmi_history.py <nombre>
 ```
 
 Make sure ``matplotlib`` is installed to view the graph.
+
+## Analyzing recent history
+
+The helper module also provides ``analizar_registros_recientes`` which inspects
+the last few weeks of stored data. It prints whether your BMI is rising,
+falling or stable and reports any change in BMI classification.
+
+Example usage:
+
+```bash
+python -c "import plot_bmi_history as ph; ph.analizar_registros_recientes('Tania')"
+```
