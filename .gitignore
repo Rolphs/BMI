@@ -1,0 +1,15 @@
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+*.pyd
+*.pyc
+*.pyo
+*.tmp
+*~
+*.swp
+.DS_Store
+
