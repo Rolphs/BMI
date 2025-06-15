@@ -77,6 +77,17 @@ def main():
             print(consejo)
         imprimir_tabla_bmi(bmi, clasificacion)
 
+        peso_min, peso_max = calcular_rango_peso_saludable(altura)
+        print(
+            f"Para tu altura, un peso entre {peso_min:.1f} kg y {peso_max:.1f} kg es considerado saludable."
+        )
+
+        peso_objetivo = pedir_float_positivo(
+            "Ingresa un peso objetivo para ver su BMI: ", min_val=30, max_val=300
+        )
+        bmi_objetivo = calcular_bmi(peso_objetivo, altura)
+        print(f"El BMI para {peso_objetivo} kg ser\u00eda: {bmi_objetivo:.2f}")
+
         repetir = input("¿Deseas calcular otro BMI? [S/N]: ")
         if repetir.strip().lower().startswith("n"):
             break
@@ -134,6 +145,13 @@ def imprimir_tabla_bmi(bmi, clasificacion):
     print(linea)
     print(fila)
     print(linea)
+
+
+def calcular_rango_peso_saludable(altura, bmi_min=18.5, bmi_max=24.9):
+    """Devuelve el rango de peso saludable para la altura dada."""
+    peso_min = bmi_min * altura ** 2
+    peso_max = bmi_max * altura ** 2
+    return peso_min, peso_max
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ This repository contains a simple Python script `bmi.py` that calculates the **B
 
 ## How the script works
 
-Running the script will first ask for your name and then prompt you for your weight in kilograms and height in meters (questions are displayed in Spanish). Values must fall within a sensible range (30–300 kg for weight and 0.5–2.5 m for height). It then computes your BMI, shows the associated classification (e.g. Normal, Alto) and prints a table highlighting your category. Depending on the result, the script also displays a short recommendation.
+Running the script will first ask for your name and then prompt you for your weight in kilograms and height in meters (questions are displayed in Spanish). Values must fall within a sensible range (30–300 kg for weight and 0.5–2.5 m for height). It then computes your BMI, shows the associated classification (e.g. Normal, Alto) and prints a table highlighting your category. Depending on the result, the script also displays a short recommendation. After that the program shows the ideal weight range for the given height and lets you enter a target weight to see its BMI.
 
 ## Prerequisites
 
@@ -32,6 +32,9 @@ Clasificación: Normal
 +------------+------------+------------+------------+------------+
 |            |            |    22.86   |            |            |
 +------------+------------+------------+------------+------------+
+Para tu altura, un peso entre 56.7 kg y 76.3 kg es considerado saludable.
+Ingresa un peso objetivo para ver su BMI: 65
+El BMI para 65 kg sería: 21.25
 ```
 
 (The highlighted cell uses inverted colours.)
