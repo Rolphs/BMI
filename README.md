@@ -30,10 +30,11 @@ scripts in this repository.
 ## Usage
 
 From the repository root, execute the ``bmi`` command (installed via
-``pip install .``):
+``pip install .``).  A ``--lang`` flag lets you switch between
+Spanish (default) and English:
 
 ```bash
-bmi
+bmi --lang en
 ```
 
 After entering your name, weight and height you should see output similar to:
