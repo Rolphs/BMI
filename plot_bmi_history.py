@@ -117,8 +117,8 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
     idx_primera = orden.index(primera)
     idx_ultima = orden.index(ultima)
 
-    primera_label = msj("cat_" + primera)
-    ultima_label = msj("cat_" + ultima)
+    primera_label = msj("cat_" + primera.lower())
+    ultima_label = msj("cat_" + ultima.lower())
 
     if idx_ultima < idx_primera:
         cambio = msj("mejora", primera=primera_label, ultima=ultima_label)

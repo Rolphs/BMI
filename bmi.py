@@ -209,7 +209,7 @@ def mostrar_historial(nombre, base_dir="registros"):
         bmi = reg.get("bmi", "-")
         clasificacion = reg.get("clasificacion", "-")
         if clasificacion != "-":
-            clasificacion = msj("cat_" + clasificacion)
+            clasificacion = msj("cat_" + clasificacion.lower())
         print(f" {fecha} -> BMI {bmi} ({clasificacion})")
     print()
 
@@ -275,7 +275,7 @@ def main(argv=None):
         bmi = calcular_bmi(peso, altura)
         print(msj("tu_bmi", bmi=bmi))
         clasificacion = clasificar_bmi(bmi)
-        clasificacion_label = msj("cat_" + clasificacion)
+        clasificacion_label = msj("cat_" + clasificacion.lower())
         print(msj("clasificacion", clasificacion=clasificacion_label))
         consejo_key = obtener_consejo(clasificacion)
         if consejo_key:
