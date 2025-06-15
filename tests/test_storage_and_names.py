@@ -1,10 +1,4 @@
-import os
-import sys
-import csv
 import pytest
-
-# Ensure repository root in path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from bmi import (
     obtener_nombres_guardados,
@@ -26,7 +20,14 @@ def test_obtener_nombres_guardados(tmp_path):
 
 def test_guardar_y_cargar_registro(tmp_path):
     base = tmp_path
-    guardar_registro("Ana Maria", 70, 1.75, 22.86, "Normal", base_dir=str(base))
+    guardar_registro(
+        "Ana Maria",
+        70,
+        1.75,
+        22.86,
+        "Normal",
+        base_dir=str(base),
+    )
     archivo = base / "Ana_Maria.csv"
     assert archivo.exists()
     registros = cargar_historial("Ana Maria", str(base))
@@ -41,7 +42,14 @@ def test_guardar_y_cargar_registro(tmp_path):
 
 def test_mostrar_historial(capsys, tmp_path):
     base = tmp_path
-    guardar_registro("Jose", 80, 1.8, 24.69, "Normal", base_dir=str(base))
+    guardar_registro(
+        "Jose",
+        80,
+        1.8,
+        24.69,
+        "Normal",
+        base_dir=str(base),
+    )
     mostrar_historial("Jose", str(base))
     out = capsys.readouterr().out
     assert "Historial para Jose" in out
@@ -49,6 +57,8 @@ def test_mostrar_historial(capsys, tmp_path):
 
 
 def test_calcular_rango_peso_saludable_custom():
-    peso_min, peso_max = calcular_rango_peso_saludable(1.8, bmi_min=20, bmi_max=22)
+    peso_min, peso_max = calcular_rango_peso_saludable(
+        1.8, bmi_min=20, bmi_max=22
+    )
     assert peso_min == pytest.approx(20 * 1.8 ** 2)
     assert peso_max == pytest.approx(22 * 1.8 ** 2)

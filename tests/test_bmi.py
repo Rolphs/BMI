@@ -1,10 +1,4 @@
-import os
-import sys
 import pytest
-
-# Ensure the repository root is on the import path so ``bmi`` can be
-# imported when running ``pytest`` directly.
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from bmi import (
     calcular_bmi,
