@@ -129,11 +129,18 @@ def obtener_nombres_guardados(base_dir="registros"):
     return nombres
 
 
-def cargar_historial(nombre, base_dir="registros"):
-    """Carga el historial de un usuario y devuelve una lista de registros."""
+def sanitize_nombre(nombre):
+    """Devuelve un nombre de archivo seguro basado en ``nombre``."""
+
     sanitized = "".join(
         c for c in nombre if c.isalnum() or c in "-_ "
     ).strip().replace(" ", "_")
+    return sanitized or "usuario"
+
+
+def cargar_historial(nombre, base_dir="registros"):
+    """Carga el historial de un usuario y devuelve una lista de registros."""
+    sanitized = sanitize_nombre(nombre)
     archivo = os.path.join(base_dir, f"{sanitized}.csv")
     if not os.path.exists(archivo):
         return []
@@ -329,11 +336,7 @@ def guardar_registro(
     """
 
     os.makedirs(base_dir, exist_ok=True)
-    sanitized = "".join(
-        c for c in nombre if c.isalnum() or c in "-_ "
-    ).strip().replace(" ", "_")
-    if not sanitized:
-        sanitized = "usuario"
+    sanitized = sanitize_nombre(nombre)
     archivo = os.path.join(base_dir, f"{sanitized}.csv")
 
     escribir_encabezado = not os.path.exists(archivo)

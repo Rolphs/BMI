@@ -1,4 +1,5 @@
 import pytest
+import bmi
 
 from bmi import (
     obtener_nombres_guardados,
@@ -6,6 +7,7 @@ from bmi import (
     cargar_historial,
     mostrar_historial,
     calcular_rango_peso_saludable,
+    sanitize_nombre,
 )
 
 
@@ -62,3 +64,22 @@ def test_calcular_rango_peso_saludable_custom():
     )
     assert peso_min == pytest.approx(20 * 1.8 ** 2)
     assert peso_max == pytest.approx(22 * 1.8 ** 2)
+
+
+def test_sanitization_consistency(tmp_path, monkeypatch):
+    nombre = "  Ju@n _ Lopez!  "
+    expected = sanitize_nombre(nombre)
+
+    join_calls = []
+    original_join = bmi.os.path.join
+
+    def spy_join(base, fname):
+        join_calls.append(fname)
+        return original_join(base, fname)
+
+    monkeypatch.setattr(bmi.os.path, "join", spy_join)
+
+    guardar_registro(nombre, 70, 1.75, 22.86, "Normal", base_dir=str(tmp_path))
+    cargar_historial(nombre, str(tmp_path))
+
+    assert join_calls == [f"{expected}.csv", f"{expected}.csv"]
