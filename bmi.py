@@ -1,6 +1,70 @@
 import os
 import csv
+import argparse
+import sys
 from datetime import datetime
+
+
+MENSAJES = {
+    "es": {
+        "titulo": "CALCULADORA DE BMI",
+        "lista_usuarios": "Usuarios con historial registrado:",
+        "seleccion_usuario": "Selecciona un usuario por número o 0 para nuevo: ",
+        "sin_registros": "No hay registros previos.\n",
+        "historial_para": "Historial para {nombre}:",
+        "pregunta_nombre": "¿Cómo te llamas? ",
+        "saludo": "Hola, {nombre}!\n",
+        "pregunta_peso": "¿Cuántos Kilogramos pesas? ",
+        "pregunta_altura": "¿Cuánto metros mides? ",
+        "peso_ingresado": "Peso ingresado: {peso} kg",
+        "altura_ingresada": "Altura ingresada: {altura} m",
+        "tu_bmi": "Tu indice de masa corporal es: {bmi:.2f}",
+        "clasificacion": "Clasificación: {clasificacion}",
+        "rango_saludable": (
+            "Para tu altura, un peso entre {peso_min:.1f} kg y {peso_max:.1f} kg es considerado saludable."
+        ),
+        "pregunta_objetivo": "Ingresa un peso objetivo para ver su BMI: ",
+        "bmi_objetivo": "El BMI para {peso_objetivo} kg sería: {bmi_objetivo:.2f}",
+        "repetir": "¿Deseas calcular otro BMI? [S/N]: ",
+    },
+    "en": {
+        "titulo": "BMI CALCULATOR",
+        "lista_usuarios": "Users with stored history:",
+        "seleccion_usuario": "Select a user by number or 0 for new: ",
+        "sin_registros": "No previous records.\n",
+        "historial_para": "History for {nombre}:",
+        "pregunta_nombre": "What's your name? ",
+        "saludo": "Hello, {nombre}!\n",
+        "pregunta_peso": "How many kilograms do you weigh? ",
+        "pregunta_altura": "How tall are you in meters? ",
+        "peso_ingresado": "Weight entered: {peso} kg",
+        "altura_ingresada": "Height entered: {altura} m",
+        "tu_bmi": "Your Body Mass Index is: {bmi:.2f}",
+        "clasificacion": "Classification: {clasificacion}",
+        "rango_saludable": (
+            "For your height, a weight between {peso_min:.1f} kg and {peso_max:.1f} kg is considered healthy."
+        ),
+        "pregunta_objetivo": "Enter a target weight to see its BMI: ",
+        "bmi_objetivo": "The BMI for {peso_objetivo} kg would be: {bmi_objetivo:.2f}",
+        "repetir": "Calculate another BMI? [Y/N]: ",
+    },
+}
+
+_IDIOMA = "es"
+
+
+def establecer_idioma(idioma):
+    """Configura el idioma para los mensajes de la aplicación."""
+
+    global _IDIOMA
+    if idioma in MENSAJES:
+        _IDIOMA = idioma
+
+
+def msj(clave, **kwargs):
+    """Devuelve el mensaje traducido para la clave dada."""
+
+    return MENSAJES[_IDIOMA][clave].format(**kwargs)
 
 
 def limpiar_pantalla():
@@ -81,9 +145,9 @@ def mostrar_historial(nombre, base_dir="registros"):
     """Muestra por pantalla el historial de un usuario si existe."""
     registros = cargar_historial(nombre, base_dir)
     if not registros:
-        print("No hay registros previos.\n")
+        print(msj("sin_registros"))
         return
-    print(f"Historial para {nombre}:")
+    print(msj("historial_para", nombre=nombre))
     for reg in registros:
         fecha = reg.get("fecha", "-")
         bmi = reg.get("bmi", "-")
@@ -92,73 +156,82 @@ def mostrar_historial(nombre, base_dir="registros"):
     print()
 
 
-def main():
+def main(argv=None):
     """Ejecuta el flujo principal de la aplicación."""
+
+    if argv is None:
+        argv = []
+
+    parser = argparse.ArgumentParser(description="Calcula el BMI")
+    parser.add_argument(
+        "--lang",
+        default="es",
+        choices=MENSAJES.keys(),
+        help="Selecciona el idioma de la interfaz",
+    )
+    args = parser.parse_args(argv)
+    establecer_idioma(args.lang)
+
     while True:
         # Al inicio del programa
         limpiar_pantalla()
 
         # Mostrar cabecera del programa
         print("=" * 40)
-        print(" CALCULADORA DE BMI ".center(40))
+        print(msj("titulo").center(40))
         print("=" * 40)
 
         nombres = obtener_nombres_guardados()
         nombre = None
         if nombres:
-            print("Usuarios con historial registrado:")
+            print(msj("lista_usuarios"))
             for idx, n in enumerate(nombres, 1):
                 print(f" {idx}) {n}")
             print(" 0) Nuevo usuario")
-            eleccion = input(
-                "Selecciona un usuario por número o 0 para nuevo: "
-            )
+            eleccion = input(msj("seleccion_usuario"))
             if eleccion.isdigit():
                 idx = int(eleccion)
                 if 1 <= idx <= len(nombres):
                     nombre = nombres[idx - 1]
                     mostrar_historial(nombre)
         if not nombre:
-            nombre = pedir_cadena_no_vacia("¿Cómo te llamas? ")
-        print(f"Hola, {nombre}!\n")
+            nombre = pedir_cadena_no_vacia(msj("pregunta_nombre"))
+        print(msj("saludo", nombre=nombre))
 
         # Pedir peso y talla al usuario
         peso = pedir_float_positivo(
-            "¿Cuántos Kilogramos pesas? ", min_val=30, max_val=300
+            msj("pregunta_peso"), min_val=30, max_val=300
         )
         altura = pedir_float_positivo(
-            "¿Cuánto metros mides? ", min_val=0.5, max_val=2.5
+            msj("pregunta_altura"), min_val=0.5, max_val=2.5
         )
 
-        print(f"Peso ingresado: {peso} kg")
-        print(f"Altura ingresada: {altura} m")
+        print(msj("peso_ingresado", peso=peso))
+        print(msj("altura_ingresada", altura=altura))
 
         bmi = calcular_bmi(peso, altura)
-        print(f"Tu indice de masa corporal es: {bmi:.2f}")
+        print(msj("tu_bmi", bmi=bmi))
         clasificacion = clasificar_bmi(bmi)
-        print(f"Clasificaci\u00f3n: {clasificacion}")
+        print(msj("clasificacion", clasificacion=clasificacion))
         consejo = obtener_consejo(clasificacion)
         if consejo:
             print(consejo)
         imprimir_tabla_bmi(bmi, clasificacion)
 
         peso_min, peso_max = calcular_rango_peso_saludable(altura)
-        print(
-            "Para tu altura, un peso entre "
-            f"{peso_min:.1f} kg y {peso_max:.1f} kg es considerado saludable."
-        )
+        print(msj("rango_saludable", peso_min=peso_min, peso_max=peso_max))
 
         peso_objetivo = pedir_float_positivo(
-            "Ingresa un peso objetivo para ver su BMI: ",
+            msj("pregunta_objetivo"),
             min_val=30,
             max_val=300,
         )
         bmi_objetivo = calcular_bmi(peso_objetivo, altura)
-        print(f"El BMI para {peso_objetivo} kg sería: {bmi_objetivo:.2f}")
+        print(msj("bmi_objetivo", peso_objetivo=peso_objetivo, bmi_objetivo=bmi_objetivo))
 
         guardar_registro(nombre, peso, altura, bmi, clasificacion)
 
-        repetir = input("¿Deseas calcular otro BMI? [S/N]: ")
+        repetir = input(msj("repetir"))
         if repetir.strip().lower().startswith("n"):
             break
 
@@ -270,5 +343,11 @@ def guardar_registro(
         )
 
 
+def main_cli():
+    """Punto de entrada cuando se invoca como script."""
+
+    main(sys.argv[1:])
+
+
 if __name__ == "__main__":
-    main()
+    main_cli()
