@@ -11,6 +11,7 @@ After the selection phase, the script will prompt for your weight in kilograms a
 ## Prerequisites
 
 - Python 3.6 or later (the script was tested with Python 3.12)
+- Install dependencies with `pip install -r requirements.txt`
 
 ## Usage
 
@@ -83,3 +84,11 @@ Example usage:
 ```bash
 python -c "import plot_bmi_history as ph; ph.analizar_registros_recientes('Tania')"
 ```
+
+## Contributing
+
+Optional development dependencies:
+
+- pytest
+- pytest-cov
+- flake8
