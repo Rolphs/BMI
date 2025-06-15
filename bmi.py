@@ -45,6 +45,44 @@ def pedir_cadena_no_vacia(prompt):
             return valor
         print("Por favor ingresa un valor no vacío.")
 
+def obtener_nombres_guardados(base_dir="registros"):
+    """Devuelve una lista de nombres con registros guardados ordenados alfabéticamente."""
+    if not os.path.isdir(base_dir):
+        return []
+    nombres = []
+    for archivo in os.listdir(base_dir):
+        if archivo.lower().endswith(".csv"):
+            nombre = os.path.splitext(archivo)[0].replace("_", " ")
+            nombres.append(nombre)
+    nombres.sort(key=lambda n: n.lower())
+    return nombres
+
+
+def cargar_historial(nombre, base_dir="registros"):
+    """Carga el historial de un usuario y devuelve una lista de registros."""
+    sanitized = "".join(c for c in nombre if c.isalnum() or c in "-_ ").strip().replace(" ", "_")
+    archivo = os.path.join(base_dir, f"{sanitized}.csv")
+    if not os.path.exists(archivo):
+        return []
+    with open(archivo, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def mostrar_historial(nombre, base_dir="registros"):
+    """Muestra por pantalla el historial de un usuario si existe."""
+    registros = cargar_historial(nombre, base_dir)
+    if not registros:
+        print("No hay registros previos.\n")
+        return
+    print(f"Historial para {nombre}:")
+    for reg in registros:
+        fecha = reg.get("fecha", "-")
+        bmi = reg.get("bmi", "-")
+        clasificacion = reg.get("clasificacion", "-")
+        print(f" {fecha} -> BMI {bmi} ({clasificacion})")
+    print()
+
+
 def main():
     """Ejecuta el flujo principal de la aplicación."""
     while True:
@@ -56,7 +94,21 @@ def main():
         print(" CALCULADORA DE BMI ".center(40))
         print("=" * 40)
 
-        nombre = pedir_cadena_no_vacia("¿Cómo te llamas? ")
+        nombres = obtener_nombres_guardados()
+        nombre = None
+        if nombres:
+            print("Usuarios con historial registrado:")
+            for idx, n in enumerate(nombres, 1):
+                print(f" {idx}) {n}")
+            print(" 0) Nuevo usuario")
+            eleccion = input("Selecciona un usuario por número o 0 para nuevo: ")
+            if eleccion.isdigit():
+                idx = int(eleccion)
+                if 1 <= idx <= len(nombres):
+                    nombre = nombres[idx - 1]
+                    mostrar_historial(nombre)
+        if not nombre:
+            nombre = pedir_cadena_no_vacia("¿Cómo te llamas? ")
         print(f"Hola, {nombre}!\n")
 
         # Pedir peso y talla al usuario
