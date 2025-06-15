@@ -91,4 +91,4 @@ Optional development dependencies:
 
 - pytest
 - pytest-cov
-- flake8
+- flake8 (run `flake8` to check code style)

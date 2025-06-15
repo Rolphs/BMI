@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from bmi import cargar_historial
 
+
 def calcular_tendencia_bmi(registros, threshold=0.1):
     """Return 'rising', 'falling' or 'stable' depending on BMI trend."""
     if len(registros) < 2:
@@ -63,8 +64,10 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
         tendencia_msg = "tu BMI se mantiene estable"
 
     print(
-        f"En las \u00faltimas {semanas} semanas {tendencia_msg} y tu clasificaci\u00f3n {cambio}"
+        "En las \u00faltimas "
+        f"{semanas} semanas {tendencia_msg} y tu clasificaci\u00f3n {cambio}"
     )
+
 
 def plot_historial(nombre, base_dir="registros"):
     registros = cargar_historial(nombre, base_dir)
@@ -87,11 +90,16 @@ def plot_historial(nombre, base_dir="registros"):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Grafica el historial de BMI de un usuario")
+    parser = argparse.ArgumentParser(
+        description="Grafica el historial de BMI de un usuario"
+    )
     parser.add_argument("nombre", help="Nombre del usuario")
-    parser.add_argument("--base-dir", default="registros", help="Directorio con registros")
+    parser.add_argument(
+        "--base-dir", default="registros", help="Directorio con registros"
+    )
     args = parser.parse_args()
     plot_historial(args.nombre, args.base_dir)
+
 
 if __name__ == "__main__":
     main()

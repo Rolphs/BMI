@@ -1,5 +1,3 @@
-import pytest
-
 from plot_bmi_history import calcular_tendencia_bmi
 
 

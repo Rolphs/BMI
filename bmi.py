@@ -2,6 +2,7 @@ import os
 import csv
 from datetime import datetime
 
+
 def limpiar_pantalla():
     """Borra el contenido de la terminal cuando es posible.
 
@@ -12,6 +13,7 @@ def limpiar_pantalla():
     """
 
     os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def pedir_float_positivo(prompt, min_val=None, max_val=None):
     """Solicita al usuario un número flotante positivo.
@@ -37,6 +39,7 @@ def pedir_float_positivo(prompt, min_val=None, max_val=None):
         except ValueError:
             print("Entrada inválida. Ingresa un número válido.")
 
+
 def pedir_cadena_no_vacia(prompt):
     """Solicita al usuario una cadena no vacía."""
     while True:
@@ -45,8 +48,12 @@ def pedir_cadena_no_vacia(prompt):
             return valor
         print("Por favor ingresa un valor no vacío.")
 
+
 def obtener_nombres_guardados(base_dir="registros"):
-    """Devuelve una lista de nombres con registros guardados ordenados alfabéticamente."""
+    """Devuelve una lista de nombres con registros guardados.
+
+    Los nombres se devuelven ordenados alfabéticamente.
+    """
     if not os.path.isdir(base_dir):
         return []
     nombres = []
@@ -60,7 +67,9 @@ def obtener_nombres_guardados(base_dir="registros"):
 
 def cargar_historial(nombre, base_dir="registros"):
     """Carga el historial de un usuario y devuelve una lista de registros."""
-    sanitized = "".join(c for c in nombre if c.isalnum() or c in "-_ ").strip().replace(" ", "_")
+    sanitized = "".join(
+        c for c in nombre if c.isalnum() or c in "-_ "
+    ).strip().replace(" ", "_")
     archivo = os.path.join(base_dir, f"{sanitized}.csv")
     if not os.path.exists(archivo):
         return []
@@ -101,7 +110,9 @@ def main():
             for idx, n in enumerate(nombres, 1):
                 print(f" {idx}) {n}")
             print(" 0) Nuevo usuario")
-            eleccion = input("Selecciona un usuario por número o 0 para nuevo: ")
+            eleccion = input(
+                "Selecciona un usuario por número o 0 para nuevo: "
+            )
             if eleccion.isdigit():
                 idx = int(eleccion)
                 if 1 <= idx <= len(nombres):
@@ -133,11 +144,14 @@ def main():
 
         peso_min, peso_max = calcular_rango_peso_saludable(altura)
         print(
-            f"Para tu altura, un peso entre {peso_min:.1f} kg y {peso_max:.1f} kg es considerado saludable."
+            "Para tu altura, un peso entre "
+            f"{peso_min:.1f} kg y {peso_max:.1f} kg es considerado saludable."
         )
 
         peso_objetivo = pedir_float_positivo(
-            "Ingresa un peso objetivo para ver su BMI: ", min_val=30, max_val=300
+            "Ingresa un peso objetivo para ver su BMI: ",
+            min_val=30,
+            max_val=300,
         )
         bmi_objetivo = calcular_bmi(peso_objetivo, altura)
         print(f"El BMI para {peso_objetivo} kg sería: {bmi_objetivo:.2f}")
@@ -147,6 +161,7 @@ def main():
         repetir = input("¿Deseas calcular otro BMI? [S/N]: ")
         if repetir.strip().lower().startswith("n"):
             break
+
 
 def calcular_bmi(peso, altura):
     """Calcula el índice de masa corporal."""
@@ -170,11 +185,15 @@ def clasificar_bmi(bmi):
 def obtener_consejo(clasificacion):
     """Devuelve un breve consejo seg\u00fan la clasificaci\u00f3n del BMI."""
     mensajes = {
-        "Muy bajo": "Consulta a un profesional para mejorar tu nutrici\u00f3n.",
-        "Bajo": "Incluye m\u00e1s calor\u00edas saludables en tu dieta.",
-        "Normal": "Contin\u00faa con tu estilo de vida saludable.",
-        "Alto": "Aumenta la actividad f\u00edsica y cuida tu alimentaci\u00f3n.",
-        "Muy alto": "Busca apoyo m\u00e9dico para reducir tu peso.",
+        "Muy bajo": (
+            "Consulta a un profesional para mejorar tu nutrición."
+        ),
+        "Bajo": "Incluye más calorías saludables en tu dieta.",
+        "Normal": "Continúa con tu estilo de vida saludable.",
+        "Alto": (
+            "Aumenta la actividad física y cuida tu alimentación."
+        ),
+        "Muy alto": "Busca apoyo médico para reducir tu peso.",
     }
     return mensajes.get(clasificacion, "")
 
@@ -210,7 +229,14 @@ def calcular_rango_peso_saludable(altura, bmi_min=18.5, bmi_max=24.9):
     return peso_min, peso_max
 
 
-def guardar_registro(nombre, peso, altura, bmi, clasificacion, base_dir="registros"):
+def guardar_registro(
+    nombre,
+    peso,
+    altura,
+    bmi,
+    clasificacion,
+    base_dir="registros",
+):
     """Guarda los datos de la consulta en un archivo CSV.
 
     El archivo se crea dentro de ``base_dir`` con el nombre del usuario.
@@ -218,7 +244,9 @@ def guardar_registro(nombre, peso, altura, bmi, clasificacion, base_dir="registr
     """
 
     os.makedirs(base_dir, exist_ok=True)
-    sanitized = "".join(c for c in nombre if c.isalnum() or c in "-_ ").strip().replace(" ", "_")
+    sanitized = "".join(
+        c for c in nombre if c.isalnum() or c in "-_ "
+    ).strip().replace(" ", "_")
     if not sanitized:
         sanitized = "usuario"
     archivo = os.path.join(base_dir, f"{sanitized}.csv")
