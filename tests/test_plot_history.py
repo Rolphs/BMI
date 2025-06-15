@@ -2,13 +2,21 @@ import csv
 import matplotlib.pyplot as plt
 import plot_bmi_history as ph
 import bmi
+import pytest
 
 
 def _write_records(path, bmis):
     with open(path, 'w', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(
             f,
-            fieldnames=["fecha", "nombre", "peso", "altura", "bmi", "clasificacion"],
+            fieldnames=[
+                "fecha",
+                "nombre",
+                "peso",
+                "altura",
+                "bmi",
+                "clasificacion",
+            ],
         )
         writer.writeheader()
         for i, bmi_val in enumerate(bmis):
@@ -22,9 +30,6 @@ def _write_records(path, bmis):
                     "clasificacion": bmi.CAT_NORMAL,
                 }
             )
-
-
-import pytest
 
 
 @pytest.mark.parametrize(
@@ -48,4 +53,3 @@ def test_main_lang_en(tmp_path, monkeypatch, capsys):
     out = capsys.readouterr().out
     assert "Trend for Ana: rising" in out
     ph.establecer_idioma("es")
-

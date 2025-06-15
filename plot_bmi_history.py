@@ -15,7 +15,9 @@ from bmi import (
 MENSAJES = {
     "es": {
         "no_historial": "No hay historial para {nombre}",
-        "no_recientes": "No hay suficientes registros recientes para analizar.",
+        "no_recientes": (
+            "No hay suficientes registros recientes para analizar."
+        ),
         "tendencia_para": "Tendencia para {nombre}: {tendencia}",
         "rising": "tu BMI est\u00e1 subiendo",
         "falling": "tu BMI est\u00e1 bajando",
@@ -132,7 +134,14 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
     else:
         tendencia_msg = msj("stable")
 
-    print(msj("resumen", semanas=semanas, tendencia_msg=tendencia_msg, cambio=cambio))
+    print(
+        msj(
+            "resumen",
+            semanas=semanas,
+            tendencia_msg=tendencia_msg,
+            cambio=cambio,
+        )
+    )
 
 
 def plot_historial(nombre, base_dir="registros"):

@@ -1,5 +1,7 @@
 # BMI Calculator
 
+[![CI](https://github.com/YOUR_GITHUB_USERNAME/BMI/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_GITHUB_USERNAME/BMI/actions/workflows/ci.yml)
+
 This repository contains a simple Python script `bmi.py` that calculates the **Body Mass Index** (BMI). BMI is a ratio of weight to height squared used to determine whether a person has a healthy body weight.
 
 ## How the script works
@@ -111,3 +113,14 @@ Optional development dependencies:
 - pytest
 - pytest-cov
 - flake8 (run `flake8` to check code style)
+
+### Continuous integration
+
+This repository uses GitHub Actions to run `flake8` and `pytest` on every push.
+You can run the same checks locally with:
+
+```bash
+pip install -r requirements.txt flake8 pytest
+flake8
+pytest
+```

@@ -80,7 +80,14 @@ def test_sanitization_consistency(tmp_path, monkeypatch):
 
     monkeypatch.setattr(bmi.os.path, "join", spy_join)
 
-    guardar_registro(nombre, 70, 1.75, 22.86, CAT_NORMAL, base_dir=str(tmp_path))
+    guardar_registro(
+        nombre,
+        70,
+        1.75,
+        22.86,
+        CAT_NORMAL,
+        base_dir=str(tmp_path),
+    )
     cargar_historial(nombre, str(tmp_path))
 
     assert join_calls == [f"{expected}.csv", f"{expected}.csv"]

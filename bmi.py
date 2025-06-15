@@ -9,7 +9,9 @@ MENSAJES = {
     "es": {
         "titulo": "CALCULADORA DE BMI",
         "lista_usuarios": "Usuarios con historial registrado:",
-        "seleccion_usuario": "Selecciona un usuario por número o 0 para nuevo: ",
+        "seleccion_usuario": (
+            "Selecciona un usuario por número o 0 para nuevo: "
+        ),
         "sin_registros": "No hay registros previos.\n",
         "historial_para": "Historial para {nombre}:",
         "pregunta_nombre": "¿Cómo te llamas? ",
@@ -21,16 +23,21 @@ MENSAJES = {
         "tu_bmi": "Tu indice de masa corporal es: {bmi:.2f}",
         "clasificacion": "Clasificación: {clasificacion}",
         "rango_saludable": (
-            "Para tu altura, un peso entre {peso_min:.1f} kg y {peso_max:.1f} kg es considerado saludable."
+            "Para tu altura, un peso entre {peso_min:.1f} kg y "
+            "{peso_max:.1f} kg es considerado saludable."
         ),
         "pregunta_objetivo": "Ingresa un peso objetivo para ver su BMI: ",
-        "bmi_objetivo": "El BMI para {peso_objetivo} kg sería: {bmi_objetivo:.2f}",
+        "bmi_objetivo": (
+            "El BMI para {peso_objetivo} kg sería: {bmi_objetivo:.2f}"
+        ),
         "repetir": "¿Deseas calcular otro BMI? [S/N]: ",
-        "error_positivo": "Por favor ingresa un número positivo mayor que cero.",
+        "error_positivo": (
+            "Por favor ingresa un número positivo mayor que cero."
+        ),
         "error_minimo": "El valor debe ser mayor o igual que {min_val}.",
         "error_maximo": "El valor debe ser menor o igual que {max_val}.",
         "error_invalido": "Entrada inválida. Ingresa un número válido.",
-    "error_vacio": "Por favor ingresa un valor no vacío.",
+        "error_vacio": "Por favor ingresa un valor no vacío.",
         # Categorías y consejos
         "cat_muy_bajo": "Muy bajo",
         "cat_bajo": "Bajo",
@@ -58,10 +65,13 @@ MENSAJES = {
         "tu_bmi": "Your Body Mass Index is: {bmi:.2f}",
         "clasificacion": "Classification: {clasificacion}",
         "rango_saludable": (
-            "For your height, a weight between {peso_min:.1f} kg and {peso_max:.1f} kg is considered healthy."
+            "For your height, a weight between {peso_min:.1f} kg and "
+            "{peso_max:.1f} kg is considered healthy."
         ),
         "pregunta_objetivo": "Enter a target weight to see its BMI: ",
-        "bmi_objetivo": "The BMI for {peso_objetivo} kg would be: {bmi_objetivo:.2f}",
+        "bmi_objetivo": (
+            "The BMI for {peso_objetivo} kg would be: {bmi_objetivo:.2f}"
+        ),
         "repetir": "Calculate another BMI? [Y/N]: ",
         "error_positivo": "Please enter a positive number greater than zero.",
         "error_minimo": "Value must be greater than or equal to {min_val}.",
@@ -281,7 +291,13 @@ def main(argv=None):
             max_val=300,
         )
         bmi_objetivo = calcular_bmi(peso_objetivo, altura)
-        print(msj("bmi_objetivo", peso_objetivo=peso_objetivo, bmi_objetivo=bmi_objetivo))
+        print(
+            msj(
+                "bmi_objetivo",
+                peso_objetivo=peso_objetivo,
+                bmi_objetivo=bmi_objetivo,
+            )
+        )
 
         guardar_registro(
             nombre,
@@ -303,7 +319,7 @@ def calcular_bmi(peso, altura):
 
 
 def clasificar_bmi(bmi):
-    """Devuelve una clave de clasificaci\u00f3n seg\u00fan el BMI."""
+    """Devuelve una clave de clasificación por BMI."""
     if bmi < 16:
         return CAT_MUY_BAJO
     elif bmi < 18.5:
@@ -317,7 +333,7 @@ def clasificar_bmi(bmi):
 
 
 def obtener_consejo(clasificacion):
-    """Devuelve la clave del consejo seg\u00fan la clasificaci\u00f3n del BMI."""
+    """Devuelve la clave del consejo para la clasificación del BMI."""
     mensajes = {
         CAT_MUY_BAJO: "adv_muy_bajo",
         CAT_BAJO: "adv_bajo",
@@ -338,8 +354,16 @@ def imprimir_tabla_bmi(bmi, clasificacion):
         CAT_MUY_ALTO,
     ]
     ancho = 12
-    linea = "+" + "+".join(["-" * ancho for _ in categorias]) + "+"
-    encabezado = "|" + "|".join(msj("cat_" + cat).center(ancho) for cat in categorias) + "|"
+    linea = (
+        "+" + "+".join(["-" * ancho for _ in categorias]) + "+"
+    )
+    encabezado = (
+        "|"
+        + "|".join(
+            msj("cat_" + cat).center(ancho) for cat in categorias
+        )
+        + "|"
+    )
 
     # Construir fila con el BMI en la categor\u00eda correspondiente
     fila = []
