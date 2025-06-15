@@ -5,6 +5,11 @@ from bmi import (
     clasificar_bmi,
     pedir_cadena_no_vacia,
     calcular_rango_peso_saludable,
+    CAT_MUY_BAJO,
+    CAT_BAJO,
+    CAT_NORMAL,
+    CAT_ALTO,
+    CAT_MUY_ALTO,
 )
 
 
@@ -16,14 +21,14 @@ def test_calcular_bmi_known_values():
 @pytest.mark.parametrize(
     "bmi_value, expected",
     [
-        (15.9, "Muy bajo"),
-        (16, "Bajo"),
-        (18.4, "Bajo"),
-        (18.5, "Normal"),
-        (24.9, "Normal"),
-        (25, "Alto"),
-        (29.9, "Alto"),
-        (30, "Muy alto"),
+        (15.9, CAT_MUY_BAJO),
+        (16, CAT_BAJO),
+        (18.4, CAT_BAJO),
+        (18.5, CAT_NORMAL),
+        (24.9, CAT_NORMAL),
+        (25, CAT_ALTO),
+        (29.9, CAT_ALTO),
+        (30, CAT_MUY_ALTO),
     ],
 )
 def test_clasificar_bmi_boundaries(bmi_value, expected):

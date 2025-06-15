@@ -30,7 +30,18 @@ MENSAJES = {
         "error_minimo": "El valor debe ser mayor o igual que {min_val}.",
         "error_maximo": "El valor debe ser menor o igual que {max_val}.",
         "error_invalido": "Entrada inválida. Ingresa un número válido.",
-        "error_vacio": "Por favor ingresa un valor no vacío.",
+    "error_vacio": "Por favor ingresa un valor no vacío.",
+        # Categorías y consejos
+        "cat_muy_bajo": "Muy bajo",
+        "cat_bajo": "Bajo",
+        "cat_normal": "Normal",
+        "cat_alto": "Alto",
+        "cat_muy_alto": "Muy alto",
+        "adv_muy_bajo": "Consulta a un profesional para mejorar tu nutrición.",
+        "adv_bajo": "Incluye más calorías saludables en tu dieta.",
+        "adv_normal": "Continúa con tu estilo de vida saludable.",
+        "adv_alto": "Aumenta la actividad física y cuida tu alimentación.",
+        "adv_muy_alto": "Busca apoyo médico para reducir tu peso.",
     },
     "en": {
         "titulo": "BMI CALCULATOR",
@@ -57,10 +68,28 @@ MENSAJES = {
         "error_maximo": "Value must be less than or equal to {max_val}.",
         "error_invalido": "Invalid input. Enter a valid number.",
         "error_vacio": "Please enter a non-empty value.",
+        # Categories and advice
+        "cat_muy_bajo": "Very low",
+        "cat_bajo": "Low",
+        "cat_normal": "Normal",
+        "cat_alto": "High",
+        "cat_muy_alto": "Very high",
+        "adv_muy_bajo": "Consult a professional to improve your nutrition.",
+        "adv_bajo": "Include more healthy calories in your diet.",
+        "adv_normal": "Keep up your healthy lifestyle.",
+        "adv_alto": "Increase physical activity and watch your diet.",
+        "adv_muy_alto": "Seek medical support to reduce your weight.",
     },
 }
 
 _IDIOMA = "es"
+
+# Classification constants
+CAT_MUY_BAJO = "muy_bajo"
+CAT_BAJO = "bajo"
+CAT_NORMAL = "normal"
+CAT_ALTO = "alto"
+CAT_MUY_ALTO = "muy_alto"
 
 
 def establecer_idioma(idioma):
@@ -169,6 +198,8 @@ def mostrar_historial(nombre, base_dir="registros"):
         fecha = reg.get("fecha", "-")
         bmi = reg.get("bmi", "-")
         clasificacion = reg.get("clasificacion", "-")
+        if clasificacion != "-":
+            clasificacion = msj("cat_" + clasificacion)
         print(f" {fecha} -> BMI {bmi} ({clasificacion})")
     print()
 
@@ -234,10 +265,11 @@ def main(argv=None):
         bmi = calcular_bmi(peso, altura)
         print(msj("tu_bmi", bmi=bmi))
         clasificacion = clasificar_bmi(bmi)
-        print(msj("clasificacion", clasificacion=clasificacion))
-        consejo = obtener_consejo(clasificacion)
-        if consejo:
-            print(consejo)
+        clasificacion_label = msj("cat_" + clasificacion)
+        print(msj("clasificacion", clasificacion=clasificacion_label))
+        consejo_key = obtener_consejo(clasificacion)
+        if consejo_key:
+            print(msj(consejo_key))
         imprimir_tabla_bmi(bmi, clasificacion)
 
         peso_min, peso_max = calcular_rango_peso_saludable(altura)
@@ -271,41 +303,43 @@ def calcular_bmi(peso, altura):
 
 
 def clasificar_bmi(bmi):
-    """Devuelve una clasificaci\u00f3n textual seg\u00fan el BMI."""
+    """Devuelve una clave de clasificaci\u00f3n seg\u00fan el BMI."""
     if bmi < 16:
-        return "Muy bajo"
+        return CAT_MUY_BAJO
     elif bmi < 18.5:
-        return "Bajo"
+        return CAT_BAJO
     elif bmi < 25:
-        return "Normal"
+        return CAT_NORMAL
     elif bmi < 30:
-        return "Alto"
+        return CAT_ALTO
     else:
-        return "Muy alto"
+        return CAT_MUY_ALTO
 
 
 def obtener_consejo(clasificacion):
-    """Devuelve un breve consejo seg\u00fan la clasificaci\u00f3n del BMI."""
+    """Devuelve la clave del consejo seg\u00fan la clasificaci\u00f3n del BMI."""
     mensajes = {
-        "Muy bajo": (
-            "Consulta a un profesional para mejorar tu nutrición."
-        ),
-        "Bajo": "Incluye más calorías saludables en tu dieta.",
-        "Normal": "Continúa con tu estilo de vida saludable.",
-        "Alto": (
-            "Aumenta la actividad física y cuida tu alimentación."
-        ),
-        "Muy alto": "Busca apoyo médico para reducir tu peso.",
+        CAT_MUY_BAJO: "adv_muy_bajo",
+        CAT_BAJO: "adv_bajo",
+        CAT_NORMAL: "adv_normal",
+        CAT_ALTO: "adv_alto",
+        CAT_MUY_ALTO: "adv_muy_alto",
     }
     return mensajes.get(clasificacion, "")
 
 
 def imprimir_tabla_bmi(bmi, clasificacion):
     """Muestra una tabla con el BMI dentro del rango destacado."""
-    categorias = ["Muy bajo", "Bajo", "Normal", "Alto", "Muy alto"]
+    categorias = [
+        CAT_MUY_BAJO,
+        CAT_BAJO,
+        CAT_NORMAL,
+        CAT_ALTO,
+        CAT_MUY_ALTO,
+    ]
     ancho = 12
     linea = "+" + "+".join(["-" * ancho for _ in categorias]) + "+"
-    encabezado = "|" + "|".join(cat.center(ancho) for cat in categorias) + "|"
+    encabezado = "|" + "|".join(msj("cat_" + cat).center(ancho) for cat in categorias) + "|"
 
     # Construir fila con el BMI en la categor\u00eda correspondiente
     fila = []

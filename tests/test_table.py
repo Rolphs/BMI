@@ -2,7 +2,7 @@ import bmi
 
 
 def test_imprimir_tabla_bmi_output(capsys):
-    bmi.imprimir_tabla_bmi(22.86, "Normal")
+    bmi.imprimir_tabla_bmi(22.86, bmi.CAT_NORMAL)
     out = capsys.readouterr().out
     lines = out.splitlines()
     width = 12

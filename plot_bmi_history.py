@@ -2,7 +2,14 @@ import argparse
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
-from bmi import cargar_historial
+from bmi import (
+    cargar_historial,
+    CAT_MUY_BAJO,
+    CAT_BAJO,
+    CAT_NORMAL,
+    CAT_ALTO,
+    CAT_MUY_ALTO,
+)
 
 
 MENSAJES = {
@@ -23,6 +30,11 @@ MENSAJES = {
             "Revisa tu alimentaci\u00f3n y actividad f\u00edsica."
         ),
         "sin_cambio": "se mantiene en {ultima}.",
+        "cat_muy_bajo": "Muy bajo",
+        "cat_bajo": "Bajo",
+        "cat_normal": "Normal",
+        "cat_alto": "Alto",
+        "cat_muy_alto": "Muy alto",
     },
     "en": {
         "no_historial": "No history for {nombre}",
@@ -41,6 +53,11 @@ MENSAJES = {
             "Check your diet and exercise."
         ),
         "sin_cambio": "remains {ultima}.",
+        "cat_muy_bajo": "Very low",
+        "cat_bajo": "Low",
+        "cat_normal": "Normal",
+        "cat_alto": "High",
+        "cat_muy_alto": "Very high",
     },
 }
 
@@ -94,16 +111,19 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
     primera = recientes_sorted[0]["clasificacion"]
     ultima = recientes_sorted[-1]["clasificacion"]
 
-    orden = ["Muy bajo", "Bajo", "Normal", "Alto", "Muy alto"]
+    orden = [CAT_MUY_BAJO, CAT_BAJO, CAT_NORMAL, CAT_ALTO, CAT_MUY_ALTO]
     idx_primera = orden.index(primera)
     idx_ultima = orden.index(ultima)
 
+    primera_label = msj("cat_" + primera)
+    ultima_label = msj("cat_" + ultima)
+
     if idx_ultima < idx_primera:
-        cambio = msj("mejora", primera=primera, ultima=ultima)
+        cambio = msj("mejora", primera=primera_label, ultima=ultima_label)
     elif idx_ultima > idx_primera:
-        cambio = msj("empeora", primera=primera, ultima=ultima)
+        cambio = msj("empeora", primera=primera_label, ultima=ultima_label)
     else:
-        cambio = msj("sin_cambio", ultima=ultima)
+        cambio = msj("sin_cambio", ultima=ultima_label)
 
     if tendencia == "rising":
         tendencia_msg = msj("rising")

@@ -1,6 +1,7 @@
 import csv
 import matplotlib.pyplot as plt
 import plot_bmi_history as ph
+import bmi
 
 
 def _write_records(path, bmis):
@@ -10,15 +11,15 @@ def _write_records(path, bmis):
             fieldnames=["fecha", "nombre", "peso", "altura", "bmi", "clasificacion"],
         )
         writer.writeheader()
-        for i, bmi in enumerate(bmis):
+        for i, bmi_val in enumerate(bmis):
             writer.writerow(
                 {
                     "fecha": f"2024-{i+1:02d}-01T00:00:00",
                     "nombre": "Ana",
                     "peso": "70",
                     "altura": "1.70",
-                    "bmi": bmi,
-                    "clasificacion": "Normal",
+                    "bmi": bmi_val,
+                    "clasificacion": bmi.CAT_NORMAL,
                 }
             )
 
