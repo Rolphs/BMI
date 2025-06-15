@@ -11,14 +11,29 @@ After the selection phase, the script will prompt for your weight in kilograms a
 ## Prerequisites
 
 - Python 3.6 or later (the script was tested with Python 3.12)
-- Install dependencies with `pip install -r requirements.txt`
+- Dependencies are listed in ``pyproject.toml``. Install them together with
+  the package using ``pip install .`` or, if running straight from the source,
+  with ``pip install -r requirements.txt``.
+
+## Installation
+
+From the repository root you can install the project as a package so the
+console scripts are available in your environment:
+
+```bash
+pip install .
+```
+
+This will provide the commands ``bmi`` and ``plot-bmi-history`` which wrap the
+scripts in this repository.
 
 ## Usage
 
-From the repository root, execute:
+From the repository root, execute the ``bmi`` command (installed via
+``pip install .``):
 
 ```bash
-python bmi.py
+bmi
 ```
 
 After entering your name, weight and height you should see output similar to:
@@ -63,12 +78,13 @@ This project is licensed under the [MIT License](LICENSE).
 ## Plotting BMI history
 
 A helper script ``plot_bmi_history.py`` reads the CSV file for a user and
-plots their BMI values over time using ``matplotlib``. The plot displays the
+plots their BMI values over time using ``matplotlib``. After installation you
+can launch it with the ``plot-bmi-history`` command. The plot displays the
 evolution and prints whether the trend is ``rising``, ``falling`` or ``stable``
 based on the first and last stored BMI values. Run it with:
 
 ```bash
-python plot_bmi_history.py <nombre>
+plot-bmi-history <nombre>
 ```
 
 Make sure ``matplotlib`` is installed to view the graph.
