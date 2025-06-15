@@ -38,3 +38,13 @@ def test_plot_historial_trend(tmp_path, monkeypatch, capsys, bmis, expected):
     out = capsys.readouterr().out
     assert f"Tendencia para Ana: {expected}" in out
 
+
+def test_main_lang_en(tmp_path, monkeypatch, capsys):
+    csv_path = tmp_path / "Ana.csv"
+    _write_records(csv_path, [20, 21])
+    monkeypatch.setattr(plt, "show", lambda: None)
+    ph.main(["Ana", "--base-dir", str(tmp_path), "--lang", "en"])
+    out = capsys.readouterr().out
+    assert "Trend for Ana: rising" in out
+    ph.establecer_idioma("es")
+

@@ -5,6 +5,58 @@ from datetime import datetime, timedelta
 from bmi import cargar_historial
 
 
+MENSAJES = {
+    "es": {
+        "no_historial": "No hay historial para {nombre}",
+        "no_recientes": "No hay suficientes registros recientes para analizar.",
+        "tendencia_para": "Tendencia para {nombre}: {tendencia}",
+        "rising": "tu BMI est\u00e1 subiendo",
+        "falling": "tu BMI est\u00e1 bajando",
+        "stable": "tu BMI se mantiene estable",
+        "resumen": (
+            "En las \u00faltimas {semanas} semanas {tendencia_msg} y tu "
+            "clasificaci\u00f3n {cambio}"
+        ),
+        "mejora": "mejor\u00f3 (de {primera} a {ultima}). \u00a1Buen trabajo!",
+        "empeora": (
+            "empeor\u00f3 (de {primera} a {ultima}). "
+            "Revisa tu alimentaci\u00f3n y actividad f\u00edsica."
+        ),
+        "sin_cambio": "se mantiene en {ultima}.",
+    },
+    "en": {
+        "no_historial": "No history for {nombre}",
+        "no_recientes": "Not enough recent records to analyze.",
+        "tendencia_para": "Trend for {nombre}: {tendencia}",
+        "rising": "your BMI is going up",
+        "falling": "your BMI is going down",
+        "stable": "your BMI is stable",
+        "resumen": (
+            "In the last {semanas} weeks {tendencia_msg} and your "
+            "classification {cambio}"
+        ),
+        "mejora": "improved (from {primera} to {ultima}). Great job!",
+        "empeora": (
+            "worsened (from {primera} to {ultima}). "
+            "Check your diet and exercise."
+        ),
+        "sin_cambio": "remains {ultima}.",
+    },
+}
+
+_IDIOMA = "es"
+
+
+def establecer_idioma(idioma):
+    global _IDIOMA
+    if idioma in MENSAJES:
+        _IDIOMA = idioma
+
+
+def msj(clave, **kwargs):
+    return MENSAJES[_IDIOMA][clave].format(**kwargs)
+
+
 def calcular_tendencia_bmi(registros, threshold=0.1):
     """Return 'rising', 'falling' or 'stable' depending on BMI trend."""
     if len(registros) < 2:
@@ -24,7 +76,7 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
     """Analiza las \u00faltimas ``semanas`` de registros y muestra consejos."""
     registros = cargar_historial(nombre, base_dir)
     if not registros:
-        print(f"No hay historial para {nombre}")
+        print(msj("no_historial", nombre=nombre))
         return
 
     limite = datetime.now() - timedelta(weeks=semanas)
@@ -34,7 +86,7 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
         if datetime.fromisoformat(r["fecha"]) >= limite
     ]
     if len(recientes) < 2:
-        print("No hay suficientes registros recientes para analizar.")
+        print(msj("no_recientes"))
         return
 
     recientes_sorted = sorted(recientes, key=lambda r: r.get("fecha", ""))
@@ -47,32 +99,26 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
     idx_ultima = orden.index(ultima)
 
     if idx_ultima < idx_primera:
-        cambio = f"mejor\u00f3 (de {primera} a {ultima}). \u00a1Buen trabajo!"
+        cambio = msj("mejora", primera=primera, ultima=ultima)
     elif idx_ultima > idx_primera:
-        cambio = (
-            f"empeor\u00f3 (de {primera} a {ultima}). "
-            "Revisa tu alimentaci\u00f3n y actividad f\u00edsica."
-        )
+        cambio = msj("empeora", primera=primera, ultima=ultima)
     else:
-        cambio = f"se mantiene en {ultima}."
+        cambio = msj("sin_cambio", ultima=ultima)
 
     if tendencia == "rising":
-        tendencia_msg = "tu BMI est\u00e1 subiendo"
+        tendencia_msg = msj("rising")
     elif tendencia == "falling":
-        tendencia_msg = "tu BMI est\u00e1 bajando"
+        tendencia_msg = msj("falling")
     else:
-        tendencia_msg = "tu BMI se mantiene estable"
+        tendencia_msg = msj("stable")
 
-    print(
-        "En las \u00faltimas "
-        f"{semanas} semanas {tendencia_msg} y tu clasificaci\u00f3n {cambio}"
-    )
+    print(msj("resumen", semanas=semanas, tendencia_msg=tendencia_msg, cambio=cambio))
 
 
 def plot_historial(nombre, base_dir="registros"):
     registros = cargar_historial(nombre, base_dir)
     if not registros:
-        print(f"No hay historial para {nombre}")
+        print(msj("no_historial", nombre=nombre))
         return
     registros_sorted = sorted(registros, key=lambda r: r.get("fecha", ""))
     fechas = [datetime.fromisoformat(r["fecha"]) for r in registros_sorted]
@@ -86,10 +132,10 @@ def plot_historial(nombre, base_dir="registros"):
     tendencia = calcular_tendencia_bmi(registros_sorted)
     plt.tight_layout()
     plt.show()
-    print(f"Tendencia para {nombre}: {tendencia}")
+    print(msj("tendencia_para", nombre=nombre, tendencia=tendencia))
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(
         description="Grafica el historial de BMI de un usuario"
     )
@@ -97,7 +143,14 @@ def main():
     parser.add_argument(
         "--base-dir", default="registros", help="Directorio con registros"
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "--lang",
+        default="es",
+        choices=MENSAJES.keys(),
+        help="Idioma de los mensajes",
+    )
+    args = parser.parse_args(argv)
+    establecer_idioma(args.lang)
     plot_historial(args.nombre, args.base_dir)
 
 

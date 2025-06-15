@@ -88,6 +88,7 @@ based on the first and last stored BMI values. Run it with:
 ```bash
 plot-bmi-history <nombre>
 ```
+You can add ``--lang en`` to show the output in English.
 
 Make sure ``matplotlib`` is installed to view the graph.
 
