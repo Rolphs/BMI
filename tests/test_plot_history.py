@@ -1,8 +1,9 @@
 import csv
-import matplotlib.pyplot as plt
+import pytest
 import plot_bmi_history as ph
 import bmi
-import pytest
+
+plt = pytest.importorskip("matplotlib.pyplot")
 
 
 def _write_records(path, bmis):

@@ -13,9 +13,11 @@ After the selection phase, the script will prompt for your weight in kilograms a
 ## Prerequisites
 
 - Python 3.6 or later (the script was tested with Python 3.12)
-- Dependencies are listed in ``pyproject.toml``. Install them together with
-  the package using ``pip install .`` or, if running straight from the source,
-  with ``pip install -r requirements.txt``.
+ - Dependencies are listed in ``pyproject.toml``. Install them with
+   ``pip install .``.  If you want the optional plotting helper make sure to add
+   the ``plot`` extra:
+   ``pip install .[plot]``.  When running straight from the source you can use
+   ``pip install -r requirements.txt`` which already includes this extra.
 
 ## Installation
 
@@ -24,6 +26,8 @@ console scripts are available in your environment:
 
 ```bash
 pip install .
+# install the optional plotting helper with:
+pip install .[plot]
 ```
 
 This will provide the commands ``bmi`` and ``plot-bmi-history`` which wrap the
@@ -70,14 +74,15 @@ can either install the project in editable mode or use the provided
 ``requirements.txt`` file:
 
 ```bash
-pip install .
+pip install .[plot]
 # or
 pip install -r requirements.txt
 ```
 
 After that simply run ``pytest`` from the repository root.  The suite adjusts
 ``sys.path`` automatically so running ``pytest`` directly works without using
-``python -m``.  ``matplotlib`` is required for the plot-related tests.
+``python -m``.  The optional ``plot`` extra installs ``matplotlib`` so the
+plot-related tests can run.
 
 ```bash
 pytest
@@ -102,7 +107,8 @@ plot-bmi-history <nombre>
 ```
 You can add ``--lang en`` to show the output in English.
 
-Make sure ``matplotlib`` is installed to view the graph.
+Install the project with ``pip install .[plot]`` so ``matplotlib`` is available
+to display the graph.
 
 ## Analyzing recent history
 
