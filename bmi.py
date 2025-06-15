@@ -169,6 +169,11 @@ def main(argv=None):
         choices=MENSAJES.keys(),
         help="Selecciona el idioma de la interfaz",
     )
+    parser.add_argument(
+        "--base-dir",
+        default="registros",
+        help="Directorio base para guardar registros",
+    )
     args = parser.parse_args(argv)
     establecer_idioma(args.lang)
 
@@ -181,7 +186,7 @@ def main(argv=None):
         print(msj("titulo").center(40))
         print("=" * 40)
 
-        nombres = obtener_nombres_guardados()
+        nombres = obtener_nombres_guardados(args.base_dir)
         nombre = None
         if nombres:
             print(msj("lista_usuarios"))
@@ -193,7 +198,7 @@ def main(argv=None):
                 idx = int(eleccion)
                 if 1 <= idx <= len(nombres):
                     nombre = nombres[idx - 1]
-                    mostrar_historial(nombre)
+                    mostrar_historial(nombre, args.base_dir)
         if not nombre:
             nombre = pedir_cadena_no_vacia(msj("pregunta_nombre"))
         print(msj("saludo", nombre=nombre))
@@ -229,7 +234,14 @@ def main(argv=None):
         bmi_objetivo = calcular_bmi(peso_objetivo, altura)
         print(msj("bmi_objetivo", peso_objetivo=peso_objetivo, bmi_objetivo=bmi_objetivo))
 
-        guardar_registro(nombre, peso, altura, bmi, clasificacion)
+        guardar_registro(
+            nombre,
+            peso,
+            altura,
+            bmi,
+            clasificacion,
+            args.base_dir,
+        )
 
         repetir = input(msj("repetir"))
         if repetir.strip().lower().startswith("n"):

@@ -31,7 +31,8 @@ scripts in this repository.
 
 From the repository root, execute the ``bmi`` command (installed via
 ``pip install .``).  A ``--lang`` flag lets you switch between
-Spanish (default) and English:
+Spanish (default) and English. Use ``--base-dir`` to select where CSV
+records are stored (default is ``registros``):
 
 ```bash
 bmi --lang en
@@ -58,7 +59,7 @@ El BMI para 65 kg sería: 21.25
 
 (The highlighted cell uses inverted colours.)
 
-All completed calculations are appended to ``registros/<tu_nombre>.csv`` so you can keep track of your history.
+All completed calculations are appended to ``registros/<tu_nombre>.csv`` so you can keep track of your history. The directory can be changed with the ``--base-dir`` flag.
 
 ## Running tests
 
