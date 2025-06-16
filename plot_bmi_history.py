@@ -164,6 +164,16 @@ def plot_historial(nombre, base_dir="registros"):
     print(msj("tendencia_para", nombre=nombre, tendencia=tendencia))
 
 
+def mostrar_grafica(nombre, base_dir="registros"):
+    """Muestra la evolución del BMI en una gráfica.
+
+    This wrapper simply delegates to :func:`plot_historial` so external
+    callers can invoke the plotting helper using a Spanish name.
+    """
+
+    plot_historial(nombre, base_dir)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(
         description="Grafica el historial de BMI de un usuario"
