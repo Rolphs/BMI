@@ -19,8 +19,8 @@ plot = [
 
 [project.scripts]
 bmi = "bmi:main_cli"
-plot-bmi-history = "plot_bmi_history:main"
 bmi-console = "bmi_console:main"
+plot-bmi-history = "plot_bmi_history:main"
 
 [tool.setuptools]
 py-modules = ["bmi", "plot_bmi_history", "bmi_console"]

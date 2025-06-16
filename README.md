@@ -30,8 +30,8 @@ pip install .
 pip install .[plot]
 ```
 
-This will provide the commands ``bmi`` and ``plot-bmi-history`` which wrap the
-scripts in this repository.
+This will provide the commands ``bmi``, ``plot-bmi-history`` and ``bmi-console``
+which wrap the scripts in this repository.
 
 ## Usage
 
@@ -66,6 +66,16 @@ El BMI para 65 kg sería: 21.25
 (The highlighted cell uses inverted colours.)
 
 All completed calculations are appended to ``registros/<tu_nombre>.csv`` so you can keep track of your history. The directory can be changed with the ``--base-dir`` flag.
+
+### Menu mode
+
+You can launch a simple interactive menu with ``bmi-console`` which
+allows you to calculate a new BMI or view the stored history and graph
+for a user.
+
+```bash
+bmi-console --lang en
+```
 
 ## Running tests
 
