@@ -214,6 +214,44 @@ def mostrar_historial(nombre, base_dir="registros"):
     print()
 
 
+def calcular_bmi_para_usuario(nombre, base_dir="registros"):
+    """Solicita datos al usuario, guarda el registro y devuelve BMI y clasificación."""
+
+    peso = pedir_float_positivo(msj("pregunta_peso"), min_val=30, max_val=300)
+    altura = pedir_float_positivo(msj("pregunta_altura"), min_val=0.5, max_val=2.5)
+
+    print(msj("peso_ingresado", peso=peso))
+    print(msj("altura_ingresada", altura=altura))
+
+    bmi = calcular_bmi(peso, altura)
+    print(msj("tu_bmi", bmi=bmi))
+    clasificacion = clasificar_bmi(bmi)
+    clasificacion_label = msj("cat_" + clasificacion.lower())
+    print(msj("clasificacion", clasificacion=clasificacion_label))
+    consejo_key = obtener_consejo(clasificacion)
+    if consejo_key:
+        print(msj(consejo_key))
+    imprimir_tabla_bmi(bmi, clasificacion)
+
+    peso_min, peso_max = calcular_rango_peso_saludable(altura)
+    print(msj("rango_saludable", peso_min=peso_min, peso_max=peso_max))
+
+    peso_objetivo = pedir_float_positivo(
+        msj("pregunta_objetivo"), min_val=30, max_val=300
+    )
+    bmi_objetivo = calcular_bmi(peso_objetivo, altura)
+    print(
+        msj(
+            "bmi_objetivo",
+            peso_objetivo=peso_objetivo,
+            bmi_objetivo=bmi_objetivo,
+        )
+    )
+
+    guardar_registro(nombre, peso, altura, bmi, clasificacion, base_dir)
+    return bmi, clasificacion
+
+
 def main(argv=None):
     """Ejecuta el flujo principal de la aplicación."""
 
@@ -261,52 +299,7 @@ def main(argv=None):
             nombre = pedir_cadena_no_vacia(msj("pregunta_nombre"))
         print(msj("saludo", nombre=nombre))
 
-        # Pedir peso y talla al usuario
-        peso = pedir_float_positivo(
-            msj("pregunta_peso"), min_val=30, max_val=300
-        )
-        altura = pedir_float_positivo(
-            msj("pregunta_altura"), min_val=0.5, max_val=2.5
-        )
-
-        print(msj("peso_ingresado", peso=peso))
-        print(msj("altura_ingresada", altura=altura))
-
-        bmi = calcular_bmi(peso, altura)
-        print(msj("tu_bmi", bmi=bmi))
-        clasificacion = clasificar_bmi(bmi)
-        clasificacion_label = msj("cat_" + clasificacion.lower())
-        print(msj("clasificacion", clasificacion=clasificacion_label))
-        consejo_key = obtener_consejo(clasificacion)
-        if consejo_key:
-            print(msj(consejo_key))
-        imprimir_tabla_bmi(bmi, clasificacion)
-
-        peso_min, peso_max = calcular_rango_peso_saludable(altura)
-        print(msj("rango_saludable", peso_min=peso_min, peso_max=peso_max))
-
-        peso_objetivo = pedir_float_positivo(
-            msj("pregunta_objetivo"),
-            min_val=30,
-            max_val=300,
-        )
-        bmi_objetivo = calcular_bmi(peso_objetivo, altura)
-        print(
-            msj(
-                "bmi_objetivo",
-                peso_objetivo=peso_objetivo,
-                bmi_objetivo=bmi_objetivo,
-            )
-        )
-
-        guardar_registro(
-            nombre,
-            peso,
-            altura,
-            bmi,
-            clasificacion,
-            args.base_dir,
-        )
+        bmi, clasificacion = calcular_bmi_para_usuario(nombre, args.base_dir)
 
         repetir = input(msj("repetir"))
         if repetir.strip().lower().startswith("n"):
