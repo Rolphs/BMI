@@ -11,69 +11,7 @@ from bmi import (
     CAT_MUY_ALTO,
 )
 
-
-MENSAJES = {
-    "es": {
-        "no_historial": "No hay historial para {nombre}",
-        "no_recientes": (
-            "No hay suficientes registros recientes para analizar."
-        ),
-        "tendencia_para": "Tendencia para {nombre}: {tendencia}",
-        "rising": "tu BMI est\u00e1 subiendo",
-        "falling": "tu BMI est\u00e1 bajando",
-        "stable": "tu BMI se mantiene estable",
-        "resumen": (
-            "En las \u00faltimas {semanas} semanas {tendencia_msg} y tu "
-            "clasificaci\u00f3n {cambio}"
-        ),
-        "mejora": "mejor\u00f3 (de {primera} a {ultima}). \u00a1Buen trabajo!",
-        "empeora": (
-            "empeor\u00f3 (de {primera} a {ultima}). "
-            "Revisa tu alimentaci\u00f3n y actividad f\u00edsica."
-        ),
-        "sin_cambio": "se mantiene en {ultima}.",
-        "cat_muy_bajo": "Muy bajo",
-        "cat_bajo": "Bajo",
-        "cat_normal": "Normal",
-        "cat_alto": "Alto",
-        "cat_muy_alto": "Muy alto",
-    },
-    "en": {
-        "no_historial": "No history for {nombre}",
-        "no_recientes": "Not enough recent records to analyze.",
-        "tendencia_para": "Trend for {nombre}: {tendencia}",
-        "rising": "your BMI is going up",
-        "falling": "your BMI is going down",
-        "stable": "your BMI is stable",
-        "resumen": (
-            "In the last {semanas} weeks {tendencia_msg} and your "
-            "classification {cambio}"
-        ),
-        "mejora": "improved (from {primera} to {ultima}). Great job!",
-        "empeora": (
-            "worsened (from {primera} to {ultima}). "
-            "Check your diet and exercise."
-        ),
-        "sin_cambio": "remains {ultima}.",
-        "cat_muy_bajo": "Very low",
-        "cat_bajo": "Low",
-        "cat_normal": "Normal",
-        "cat_alto": "High",
-        "cat_muy_alto": "Very high",
-    },
-}
-
-_IDIOMA = "es"
-
-
-def establecer_idioma(idioma):
-    global _IDIOMA
-    if idioma in MENSAJES:
-        _IDIOMA = idioma
-
-
-def msj(clave, **kwargs):
-    return MENSAJES[_IDIOMA][clave].format(**kwargs)
+from translations import MENSAJES, establecer_idioma, msj
 
 
 def calcular_tendencia_bmi(registros, threshold=0.1):
