@@ -21,6 +21,7 @@ plot = [
 bmi = "bmi:main_cli"
 bmi-console = "bmi_console:main"
 plot-bmi-history = "plot_bmi_history:main"
+bmi-recent = "plot_bmi_history:main_recent"
 
 [tool.setuptools]
 py-modules = ["bmi", "plot_bmi_history", "bmi_console", "translations"]

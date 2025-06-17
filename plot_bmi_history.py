@@ -138,5 +138,31 @@ def main(argv=None):
     plot_historial(args.nombre, args.base_dir)
 
 
+def main_recent(argv=None):
+    """Entry point for the ``bmi-recent`` console command."""
+    parser = argparse.ArgumentParser(
+        description="Analiza los registros recientes de un usuario"
+    )
+    parser.add_argument("nombre", help="Nombre del usuario")
+    parser.add_argument(
+        "--weeks",
+        type=int,
+        default=4,
+        help="Numero de semanas a analizar",
+    )
+    parser.add_argument(
+        "--base-dir", default="registros", help="Directorio con registros"
+    )
+    parser.add_argument(
+        "--lang",
+        default="es",
+        choices=MENSAJES.keys(),
+        help="Idioma de los mensajes",
+    )
+    args = parser.parse_args(argv)
+    establecer_idioma(args.lang)
+    analizar_registros_recientes(args.nombre, args.weeks, args.base_dir)
+
+
 if __name__ == "__main__":
     main()

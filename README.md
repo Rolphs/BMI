@@ -30,7 +30,7 @@ pip install .
 pip install .[plot]
 ```
 
-This will provide the commands ``bmi``, ``plot-bmi-history`` and ``bmi-console``
+This will provide the commands ``bmi``, ``plot-bmi-history``, ``bmi-console`` and ``bmi-recent``
 which wrap the scripts in this repository.
 
 ## Usage
@@ -126,10 +126,10 @@ The helper module also provides ``analizar_registros_recientes`` which inspects
 the last few weeks of stored data. It prints whether your BMI is rising,
 falling or stable and reports any change in BMI classification.
 
-Example usage:
+After installation you can invoke it directly with ``bmi-recent``:
 
 ```bash
-python -c "import plot_bmi_history as ph; ph.analizar_registros_recientes('Tania')"
+bmi-recent Tania --weeks 8 --lang en
 ```
 
 ## Contributing
