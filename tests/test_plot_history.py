@@ -2,6 +2,7 @@ import csv
 import pytest
 import plot_bmi_history as ph
 import bmi
+from bmi import BmiCategory
 
 plt = pytest.importorskip("matplotlib.pyplot")
 
@@ -28,7 +29,7 @@ def _write_records(path, bmis):
                     "peso": "70",
                     "altura": "1.70",
                     "bmi": bmi_val,
-                    "clasificacion": bmi.CAT_NORMAL,
+                    "clasificacion": BmiCategory.NORMAL.value,
                 }
             )
 

@@ -7,11 +7,7 @@ from bmi import (
     pedir_cadena_no_vacia,
     calcular_rango_peso_saludable,
     calcular_bmi_para_usuario,
-    CAT_MUY_BAJO,
-    CAT_BAJO,
-    CAT_NORMAL,
-    CAT_ALTO,
-    CAT_MUY_ALTO,
+    BmiCategory,
 )
 
 
@@ -23,14 +19,14 @@ def test_calcular_bmi_known_values():
 @pytest.mark.parametrize(
     "bmi_value, expected",
     [
-        (15.9, CAT_MUY_BAJO),
-        (16, CAT_BAJO),
-        (18.4, CAT_BAJO),
-        (18.5, CAT_NORMAL),
-        (24.9, CAT_NORMAL),
-        (25, CAT_ALTO),
-        (29.9, CAT_ALTO),
-        (30, CAT_MUY_ALTO),
+        (15.9, BmiCategory.MUY_BAJO),
+        (16, BmiCategory.BAJO),
+        (18.4, BmiCategory.BAJO),
+        (18.5, BmiCategory.NORMAL),
+        (24.9, BmiCategory.NORMAL),
+        (25, BmiCategory.ALTO),
+        (29.9, BmiCategory.ALTO),
+        (30, BmiCategory.MUY_ALTO),
     ],
 )
 def test_clasificar_bmi_boundaries(bmi_value, expected):
@@ -55,6 +51,6 @@ def test_calcular_bmi_para_usuario(tmp_path, monkeypatch):
     monkeypatch.setattr("bmi.imprimir_tabla_bmi", lambda *a, **k: None)
     bmi_val, clasif = calcular_bmi_para_usuario("Ana", base_dir=str(tmp_path))
     assert bmi_val == pytest.approx(22.8571, rel=1e-3)
-    assert clasif == CAT_NORMAL
+    assert clasif == BmiCategory.NORMAL
     registros = bmi.cargar_historial("Ana", str(tmp_path))
     assert len(registros) == 1

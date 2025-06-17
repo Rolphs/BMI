@@ -4,11 +4,7 @@ from datetime import datetime, timedelta
 
 from bmi import (
     cargar_historial,
-    CAT_MUY_BAJO,
-    CAT_BAJO,
-    CAT_NORMAL,
-    CAT_ALTO,
-    CAT_MUY_ALTO,
+    BmiCategory,
 )
 
 from translations import MENSAJES, establecer_idioma, msj
@@ -51,12 +47,23 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
     primera = recientes_sorted[0]["clasificacion"]
     ultima = recientes_sorted[-1]["clasificacion"]
 
-    orden = [CAT_MUY_BAJO, CAT_BAJO, CAT_NORMAL, CAT_ALTO, CAT_MUY_ALTO]
+    if not isinstance(primera, BmiCategory):
+        primera = BmiCategory(str(primera))
+    if not isinstance(ultima, BmiCategory):
+        ultima = BmiCategory(str(ultima))
+
+    orden = [
+        BmiCategory.MUY_BAJO,
+        BmiCategory.BAJO,
+        BmiCategory.NORMAL,
+        BmiCategory.ALTO,
+        BmiCategory.MUY_ALTO,
+    ]
     idx_primera = orden.index(primera)
     idx_ultima = orden.index(ultima)
 
-    primera_label = msj("cat_" + primera.lower())
-    ultima_label = msj("cat_" + ultima.lower())
+    primera_label = msj("cat_" + primera.value)
+    ultima_label = msj("cat_" + ultima.value)
 
     if idx_ultima < idx_primera:
         cambio = msj("mejora", primera=primera_label, ultima=ultima_label)

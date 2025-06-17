@@ -8,7 +8,7 @@ from bmi import (
     mostrar_historial,
     calcular_rango_peso_saludable,
     sanitize_nombre,
-    CAT_NORMAL,
+    BmiCategory,
 )
 
 
@@ -28,7 +28,7 @@ def test_guardar_y_cargar_registro(tmp_path):
         70,
         1.75,
         22.86,
-        CAT_NORMAL,
+        BmiCategory.NORMAL,
         base_dir=str(base),
     )
     archivo = base / "Ana_Maria.csv"
@@ -40,7 +40,7 @@ def test_guardar_y_cargar_registro(tmp_path):
     assert float(r["peso"]) == pytest.approx(70)
     assert float(r["altura"]) == pytest.approx(1.75)
     assert float(r["bmi"]) == pytest.approx(22.86, rel=1e-2)
-    assert r["clasificacion"] == CAT_NORMAL
+    assert r["clasificacion"] == BmiCategory.NORMAL
 
 
 def test_mostrar_historial(capsys, tmp_path):
@@ -50,7 +50,7 @@ def test_mostrar_historial(capsys, tmp_path):
         80,
         1.8,
         24.69,
-        CAT_NORMAL,
+        BmiCategory.NORMAL,
         base_dir=str(base),
     )
     mostrar_historial("Jose", str(base))
@@ -85,7 +85,7 @@ def test_sanitization_consistency(tmp_path, monkeypatch):
         70,
         1.75,
         22.86,
-        CAT_NORMAL,
+        BmiCategory.NORMAL,
         base_dir=str(tmp_path),
     )
     cargar_historial(nombre, str(tmp_path))

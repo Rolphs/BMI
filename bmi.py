@@ -2,16 +2,21 @@ import os
 import csv
 import argparse
 import sys
+from enum import Enum
 from datetime import datetime
 
 from translations import MENSAJES, establecer_idioma, msj
 
-# Classification constants
-CAT_MUY_BAJO = "muy_bajo"
-CAT_BAJO = "bajo"
-CAT_NORMAL = "normal"
-CAT_ALTO = "alto"
-CAT_MUY_ALTO = "muy_alto"
+
+# Classification enumeration
+class BmiCategory(Enum):
+    """Possible BMI categories."""
+
+    MUY_BAJO = "muy_bajo"
+    BAJO = "bajo"
+    NORMAL = "normal"
+    ALTO = "alto"
+    MUY_ALTO = "muy_alto"
 
 
 def limpiar_pantalla():
@@ -92,7 +97,16 @@ def cargar_historial(nombre, base_dir="registros"):
     if not os.path.exists(archivo):
         return []
     with open(archivo, newline="", encoding="utf-8") as f:
-        return list(csv.DictReader(f))
+        registros = list(csv.DictReader(f))
+
+    for reg in registros:
+        cat = reg.get("clasificacion")
+        if cat:
+            try:
+                reg["clasificacion"] = BmiCategory(cat)
+            except ValueError:
+                pass
+    return registros
 
 
 def mostrar_historial(nombre, base_dir="registros"):
@@ -107,7 +121,11 @@ def mostrar_historial(nombre, base_dir="registros"):
         bmi = reg.get("bmi", "-")
         clasificacion = reg.get("clasificacion", "-")
         if clasificacion != "-":
-            clasificacion = msj("cat_" + clasificacion.lower())
+            if isinstance(clasificacion, BmiCategory):
+                key = clasificacion.value
+            else:
+                key = str(clasificacion).lower()
+            clasificacion = msj("cat_" + key)
         print(f" {fecha} -> BMI {bmi} ({clasificacion})")
     print()
 
@@ -124,7 +142,7 @@ def calcular_bmi_para_usuario(nombre, base_dir="registros"):
     bmi = calcular_bmi(peso, altura)
     print(msj("tu_bmi", bmi=bmi))
     clasificacion = clasificar_bmi(bmi)
-    clasificacion_label = msj("cat_" + clasificacion.lower())
+    clasificacion_label = msj("cat_" + clasificacion.value)
     print(msj("clasificacion", clasificacion=clasificacion_label))
     consejo_key = obtener_consejo(clasificacion)
     if consejo_key:
@@ -212,25 +230,25 @@ def calcular_bmi(peso, altura):
 def clasificar_bmi(bmi):
     """Devuelve una clave de clasificación por BMI."""
     if bmi < 16:
-        return CAT_MUY_BAJO
+        return BmiCategory.MUY_BAJO
     elif bmi < 18.5:
-        return CAT_BAJO
+        return BmiCategory.BAJO
     elif bmi < 25:
-        return CAT_NORMAL
+        return BmiCategory.NORMAL
     elif bmi < 30:
-        return CAT_ALTO
+        return BmiCategory.ALTO
     else:
-        return CAT_MUY_ALTO
+        return BmiCategory.MUY_ALTO
 
 
 def obtener_consejo(clasificacion):
     """Devuelve la clave del consejo para la clasificación del BMI."""
     mensajes = {
-        CAT_MUY_BAJO: "adv_muy_bajo",
-        CAT_BAJO: "adv_bajo",
-        CAT_NORMAL: "adv_normal",
-        CAT_ALTO: "adv_alto",
-        CAT_MUY_ALTO: "adv_muy_alto",
+        BmiCategory.MUY_BAJO: "adv_muy_bajo",
+        BmiCategory.BAJO: "adv_bajo",
+        BmiCategory.NORMAL: "adv_normal",
+        BmiCategory.ALTO: "adv_alto",
+        BmiCategory.MUY_ALTO: "adv_muy_alto",
     }
     return mensajes.get(clasificacion, "")
 
@@ -238,11 +256,11 @@ def obtener_consejo(clasificacion):
 def imprimir_tabla_bmi(bmi, clasificacion):
     """Muestra una tabla con el BMI dentro del rango destacado."""
     categorias = [
-        CAT_MUY_BAJO,
-        CAT_BAJO,
-        CAT_NORMAL,
-        CAT_ALTO,
-        CAT_MUY_ALTO,
+        BmiCategory.MUY_BAJO,
+        BmiCategory.BAJO,
+        BmiCategory.NORMAL,
+        BmiCategory.ALTO,
+        BmiCategory.MUY_ALTO,
     ]
     ancho = 12
     linea = (
@@ -251,7 +269,7 @@ def imprimir_tabla_bmi(bmi, clasificacion):
     encabezado = (
         "|"
         + "|".join(
-            msj("cat_" + cat).center(ancho) for cat in categorias
+            msj("cat_" + cat.value).center(ancho) for cat in categorias
         )
         + "|"
     )
@@ -312,7 +330,7 @@ def guardar_registro(
                 "peso": peso,
                 "altura": altura,
                 "bmi": round(bmi, 2),
-                "clasificacion": clasificacion,
+                "clasificacion": clasificacion.value,
             }
         )
 
