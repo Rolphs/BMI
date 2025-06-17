@@ -1,6 +1,7 @@
 from datetime import datetime
 import plot_bmi_history as ph
 import bmi
+from bmi import BmiCategory
 
 analizar_registros_recientes = ph.analizar_registros_recientes
 
@@ -10,12 +11,12 @@ def test_analizar_recientes_mejora(capsys, monkeypatch):
         {
             "fecha": "2024-01-01T00:00:00",
             "bmi": 31,
-            "clasificacion": bmi.CAT_MUY_ALTO,
+            "clasificacion": BmiCategory.MUY_ALTO,
         },
         {
             "fecha": "2024-01-15T00:00:00",
             "bmi": 29,
-            "clasificacion": bmi.CAT_ALTO,
+            "clasificacion": BmiCategory.ALTO,
         },
     ]
     monkeypatch.setattr(
@@ -39,12 +40,12 @@ def test_analizar_recientes_empeora(capsys, monkeypatch):
         {
             "fecha": "2024-01-01T00:00:00",
             "bmi": 22,
-            "clasificacion": bmi.CAT_NORMAL,
+            "clasificacion": BmiCategory.NORMAL,
         },
         {
             "fecha": "2024-02-01T00:00:00",
             "bmi": 27,
-            "clasificacion": bmi.CAT_ALTO,
+            "clasificacion": BmiCategory.ALTO,
         },
     ]
     monkeypatch.setattr(
@@ -85,7 +86,7 @@ def test_analizar_recientes_no_suficientes(capsys, monkeypatch):
         {
             "fecha": "2024-01-01T00:00:00",
             "bmi": 31,
-            "clasificacion": bmi.CAT_MUY_ALTO,
+            "clasificacion": BmiCategory.MUY_ALTO,
         },
     ]
     monkeypatch.setattr(
