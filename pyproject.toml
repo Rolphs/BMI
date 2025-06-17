@@ -23,4 +23,4 @@ bmi-console = "bmi_console:main"
 plot-bmi-history = "plot_bmi_history:main"
 
 [tool.setuptools]
-py-modules = ["bmi", "plot_bmi_history", "bmi_console"]
+py-modules = ["bmi", "plot_bmi_history", "bmi_console", "translations"]
