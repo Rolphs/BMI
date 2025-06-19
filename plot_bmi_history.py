@@ -1,5 +1,13 @@
 import argparse
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+except ModuleNotFoundError:
+    plt = None
+
+_MPL_MISSING_MSG = (
+    "matplotlib is required. Install with 'pip install .[plot]' or "
+    "'pip install -r requirements.txt'"
+)
 from datetime import datetime, timedelta
 
 from bmi import (
@@ -90,6 +98,8 @@ def analizar_registros_recientes(nombre, semanas=4, base_dir="registros"):
 
 
 def plot_historial(nombre, base_dir="registros"):
+    if plt is None:
+        raise SystemExit(_MPL_MISSING_MSG)
     registros = cargar_historial(nombre, base_dir)
     if not registros:
         print(msj("no_historial", nombre=nombre))
