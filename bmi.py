@@ -131,10 +131,13 @@ def mostrar_historial(nombre, base_dir="registros"):
 
 
 def calcular_bmi_para_usuario(nombre, base_dir="registros"):
-    """Solicita datos al usuario, guarda el registro y devuelve BMI y clasificación."""
+    """Solicita datos al usuario, guarda el registro y devuelve BMI y
+    clasificación."""
 
     peso = pedir_float_positivo(msj("pregunta_peso"), min_val=30, max_val=300)
-    altura = pedir_float_positivo(msj("pregunta_altura"), min_val=0.5, max_val=2.5)
+    altura = pedir_float_positivo(
+        msj("pregunta_altura"), min_val=0.5, max_val=2.5
+    )
 
     print(msj("peso_ingresado", peso=peso))
     print(msj("altura_ingresada", altura=altura))

@@ -139,4 +139,3 @@ def establecer_idioma(idioma):
 def msj(clave, **kwargs):
     """Return the translated message for ``clave``."""
     return MENSAJES[_IDIOMA][clave].format(**kwargs)
-
