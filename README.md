@@ -79,9 +79,9 @@ bmi-console --lang en
 
 ## Running tests
 
-Before invoking the test suite make sure the dependencies are installed.  You
-can either install the project in editable mode or use the provided
-``requirements.txt`` file:
+Before invoking the test suite make sure the optional plotting dependencies are
+installed as well.  Several tests rely on ``matplotlib`` so you must either add
+the ``plot`` extra or use the provided ``requirements.txt`` file:
 
 ```bash
 pip install .[plot]
