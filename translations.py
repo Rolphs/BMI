@@ -134,6 +134,10 @@ def establecer_idioma(idioma):
     global _IDIOMA
     if idioma in MENSAJES:
         _IDIOMA = idioma
+    else:
+        raise ValueError(
+            f"Unsupported language code '{idioma}'. Available languages: {', '.join(MENSAJES)}"
+        )
 
 
 def msj(clave, **kwargs):
