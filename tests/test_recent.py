@@ -1,6 +1,5 @@
 from datetime import datetime
 import plot_bmi_history as ph
-import bmi
 from bmi import BmiCategory
 
 analizar_registros_recientes = ph.analizar_registros_recientes

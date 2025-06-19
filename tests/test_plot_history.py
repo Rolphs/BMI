@@ -1,7 +1,6 @@
 import csv
 import pytest
 import plot_bmi_history as ph
-import bmi
 from bmi import BmiCategory
 
 plt = pytest.importorskip("matplotlib.pyplot")
